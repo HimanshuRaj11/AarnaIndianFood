@@ -128,3 +128,48 @@
     @apply font-sans;
   }
 }
+
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+  #thermal-receipt-target, #thermal-receipt-target * {
+    visibility: visible !important;
+  }
+  #thermal-receipt-target {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 80mm !important;
+    max-width: 80mm !important;
+    margin: 0 !important;
+    padding: 4mm !important;
+    box-shadow: none !important;
+    background: white !important;
+    color: black !important;
+  }
+}
+
+/* Custom Scrollbar Override */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(9, 9, 11, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(245, 158, 11, 0.25);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 158, 11, 0.65);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(245, 158, 11, 0.25) rgba(9, 9, 11, 0.2);
+}

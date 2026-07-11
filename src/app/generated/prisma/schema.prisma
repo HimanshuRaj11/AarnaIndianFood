@@ -1,0 +1,168 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/app/generated/prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Company {
+  id             String   @id @default(cuid())
+  name           String
+  street         String
+  city           String
+  state          String
+  country        String
+  zipCode        String
+  email          String?
+  phone          String
+  website        String?
+  VATNumber      String?
+  logoUrl        String?
+  description    String?
+  currencyName   String   @default("Guyanese Dollar")
+  currencyCode   String   @default("GYD")
+  currencySymbol String   @default("$")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  branches       Branch[]
+}
+
+model Branch {
+  id              String    @id @default(cuid())
+  name            String
+  street          String
+  city            String
+  state           String
+  country         String
+  zipCode         String
+  email           String?
+  phone           String
+  invoiceSequence Int       @default(1000)
+  kotSequence     Int       @default(0)
+  active          Boolean   @default(true)
+  printerName     String?
+  companyId       String?
+  company         Company?  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  users           User[]
+  products        Product[]
+  invoices        Invoice[]
+  kots            KOT[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model User {
+  id           String    @id @default(cuid())
+  name         String
+  email        String    @unique
+  passwordHash String
+  role         String    @default("STAFF") // "ADMIN" | "MANAGER" | "STAFF"
+  branchId     String?
+  branch       Branch?   @relation(fields: [branchId], references: [id], onDelete: SetNull)
+  phone        String?
+  isActive     Boolean   @default(true)
+  invoices     Invoice[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Tax {
+  id         String   @id @default(cuid())
+  taxName    String
+  percentage Float
+  taxCode    String?
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  code        String   @unique
+  price       Float
+  description String?
+  category    String
+  isAvailable Boolean  @default(true)
+  branchId    String?
+  branch      Branch?  @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Invoice {
+  id             String        @id @default(cuid())
+  invoiceId      String
+  invoiceIdTrack String
+  branchId       String
+  branch         Branch        @relation(fields: [branchId], references: [id])
+  clientName     String?
+  clientPhone    String?
+  subtotal       Float
+  discount       Float         @default(0)
+  taxAmount      Float
+  total          Float
+  paymentMode    String        @default("CASH")
+  invoiceStatus  String        @default("Done")
+  billedById     String
+  billedBy       User          @relation(fields: [billedById], references: [id])
+  notes          String?
+  delete         Boolean       @default(false)
+  items          InvoiceItem[]
+  kots           KOT[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model InvoiceItem {
+  id        String   @id @default(cuid())
+  invoiceId String
+  invoice   Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  productId String?
+  name      String
+  price     Float
+  quantity  Int
+  total     Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model KOT {
+  id             String    @id @default(cuid())
+  kotNo          String
+  branchId       String
+  branch         Branch    @relation(fields: [branchId], references: [id])
+  tableNo        String
+  status         String    @default("PENDING") // "PENDING" | "PREPARING" | "SERVED" | "CANCELLED"
+  invoiceId      String? // Associated invoice serial number (e.g. DEL-INV-1001)
+  invoiceMongoId String? // Associated Invoice UUID
+  invoice        Invoice?  @relation(fields: [invoiceMongoId], references: [id], onDelete: SetNull)
+  items          KOTItem[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model KOTItem {
+  id            String   @id @default(cuid())
+  kotId         String
+  kot           KOT      @relation(fields: [kotId], references: [id], onDelete: Cascade)
+  productId     String?
+  name          String
+  quantity      Int
+  notes         String?
+  kot_completed Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
