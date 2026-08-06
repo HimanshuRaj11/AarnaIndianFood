@@ -18,8 +18,10 @@ export default function RegisterStaffModal({ branches }: RegisterStaffModalProps
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState<"ADMIN" | "MANAGER" | "STAFF">("STAFF");
+  const [role, setRole] = useState<"ADMIN" | "MANAGER" | "STAFF" | "OWNER">("STAFF");
   const [branchId, setBranchId] = useState(branches[0]?.id || "");
+  const [department, setDepartment] = useState("");
+  const [designation, setDesignation] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -34,6 +36,8 @@ export default function RegisterStaffModal({ branches }: RegisterStaffModalProps
     formData.append("password", password);
     formData.append("role", role);
     formData.append("branchId", branchId);
+    formData.append("department", department);
+    formData.append("designation", designation);
 
     const res = await registerStaffMember(null, formData);
 
@@ -43,6 +47,8 @@ export default function RegisterStaffModal({ branches }: RegisterStaffModalProps
       setPassword("");
       setRole("STAFF");
       setBranchId(branches[0]?.id || "");
+      setDepartment("");
+      setDesignation("");
       setIsOpen(false);
     } else {
       setError(res?.error || "Registration failed.");
@@ -119,6 +125,29 @@ export default function RegisterStaffModal({ branches }: RegisterStaffModalProps
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-zinc-300 uppercase block">Department</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Kitchen"
+                    value={department}
+                    onChange={(e) => setDepartment(e.target.value)}
+                    className="w-full px-4.5 py-2.5 bg-zinc-950/80 border border-zinc-800 rounded-xl text-white placeholder-zinc-600 text-sm focus:outline-none focus:border-amber-500/50 transition-all"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-zinc-300 uppercase block">Designation</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Head Chef"
+                    value={designation}
+                    onChange={(e) => setDesignation(e.target.value)}
+                    className="w-full px-4.5 py-2.5 bg-zinc-950/80 border border-zinc-800 rounded-xl text-white placeholder-zinc-600 text-sm focus:outline-none focus:border-amber-500/50 transition-all"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
                   <label className="text-xs font-semibold text-zinc-300 uppercase block">System Role</label>
                   <select
                     value={role}
@@ -128,6 +157,7 @@ export default function RegisterStaffModal({ branches }: RegisterStaffModalProps
                     <option value="STAFF">Staff (POS)</option>
                     <option value="MANAGER">Manager</option>
                     <option value="ADMIN">Admin</option>
+                    <option value="OWNER">Owner</option>
                   </select>
                 </div>
 

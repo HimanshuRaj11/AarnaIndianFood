@@ -60,14 +60,23 @@ model User {
   name         String
   email        String    @unique
   passwordHash String
-  role         String    @default("STAFF") // "ADMIN" | "MANAGER" | "STAFF"
+  role         Role      @default(STAFF)
   branchId     String?
   branch       Branch?   @relation(fields: [branchId], references: [id], onDelete: SetNull)
   phone        String?
   isActive     Boolean   @default(true)
+  department   String?
+  designation  String?
   invoices     Invoice[]
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
+}
+
+enum Role {
+  ADMIN
+  STAFF
+  MANAGER
+  OWNER
 }
 
 model Category {

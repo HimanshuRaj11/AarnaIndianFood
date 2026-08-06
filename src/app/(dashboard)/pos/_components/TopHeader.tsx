@@ -5,7 +5,7 @@ import { Building2 } from "lucide-react";
 
 interface TopHeaderProps {
   branchName: string;
-  role: "ADMIN" | "MANAGER" | "STAFF";
+  role: "ADMIN" | "MANAGER" | "STAFF" | "OWNER";
   branchId: string;
   setBranchId: (val: string) => void;
   branches: Array<{ id: string; name: string }>;

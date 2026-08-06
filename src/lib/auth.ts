@@ -7,7 +7,7 @@ export interface UserPayload {
   userId: string;
   name: string;
   email: string;
-  role: "ADMIN" | "MANAGER" | "STAFF";
+  role: "ADMIN" | "MANAGER" | "STAFF" | "OWNER";
   branchId?: string;
 }
 

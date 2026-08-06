@@ -17,9 +17,9 @@ export async function POST(request: Request) {
     }
 
     // Role validation
-    if (!["ADMIN", "MANAGER", "STAFF"].includes(role)) {
+    if (!["ADMIN", "MANAGER", "STAFF", "OWNER"].includes(role)) {
       return NextResponse.json(
-        { error: "Invalid role. Must be ADMIN, MANAGER, or STAFF" },
+        { error: "Invalid role. Must be ADMIN, MANAGER, STAFF, or OWNER" },
         { status: 400 }
       );
     }
@@ -45,7 +45,7 @@ export async function POST(request: Request) {
         name,
         email: email.toLowerCase(),
         passwordHash,
-        role,
+        role: role as any,
         branchId: branchId || null,
       },
     });

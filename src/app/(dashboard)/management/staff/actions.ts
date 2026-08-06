@@ -10,8 +10,10 @@ const staffSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
-  role: z.enum(["ADMIN", "MANAGER", "STAFF"]),
+  role: z.enum(["ADMIN", "MANAGER", "STAFF", "OWNER"]),
   branchId: z.string().min(1, "Branch assignment is required"),
+  department: z.string().optional().nullable(),
+  designation: z.string().optional().nullable(),
 });
 
 export async function registerStaffMember(prevState: any, formData: FormData) {
@@ -26,8 +28,10 @@ export async function registerStaffMember(prevState: any, formData: FormData) {
     const password = formData.get("password") as string;
     const role = formData.get("role") as string;
     const branchId = formData.get("branchId") as string;
+    const department = (formData.get("department") as string) || null;
+    const designation = (formData.get("designation") as string) || null;
 
-    const validated = staffSchema.safeParse({ name, email, password, role, branchId });
+    const validated = staffSchema.safeParse({ name, email, password, role, branchId, department, designation });
     if (!validated.success) {
       return {
         success: false,
@@ -51,8 +55,10 @@ export async function registerStaffMember(prevState: any, formData: FormData) {
         name,
         email: email.toLowerCase(),
         passwordHash,
-        role,
+        role: role as any,
         branchId,
+        department,
+        designation,
       },
     });
 

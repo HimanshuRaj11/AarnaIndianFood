@@ -23,7 +23,7 @@ interface MiddleCatalogPanelProps {
   filteredProducts: ProductItem[];
   addToCart: (product: ProductItem, isComplement?: boolean) => void;
   focusedProductIndex: number;
-  role: "ADMIN" | "MANAGER" | "STAFF";
+  role: "ADMIN" | "MANAGER" | "STAFF" | "OWNER";
   openCustomComplement: () => void;
   billType: "BILL" | "KOT";
 }

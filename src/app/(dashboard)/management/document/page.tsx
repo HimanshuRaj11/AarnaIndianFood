@@ -5,12 +5,12 @@ import DocumentManager from "./_components/DocumentManager";
 export default async function DocumentPage() {
   const user = await getCurrentUser();
 
-  if (!user || (user.role !== "ADMIN" && user.role !== "MANAGER")) {
+  if (!user || (user.role !== "ADMIN" && user.role !== "MANAGER" && user.role !== "OWNER")) {
     return (
       <div className="p-8 max-w-4xl mx-auto mt-12 bg-zinc-900 border border-zinc-800 rounded-2xl animate-in fade-in duration-200">
         <h2 className="text-2xl font-bold text-red-500 mb-2">Access Denied</h2>
         <p className="text-zinc-400">
-          Only authenticated Administrators or Managers can access document templates and generate employee letters or payslips.
+          Only authenticated Administrators, Owners, or Managers can access document templates and generate employee letters or payslips.
         </p>
       </div>
     );

@@ -25,7 +25,7 @@ import {
 import { useState } from "react";
 
 interface DashboardNavProps {
-  role: "ADMIN" | "MANAGER" | "STAFF";
+  role: "ADMIN" | "MANAGER" | "STAFF" | "OWNER";
   userName: string;
 }
 
@@ -50,13 +50,13 @@ export default function DashboardNav({ role, userName }: DashboardNavProps) {
     { name: "Data Summary", href: "/management/data-summary", icon: BarChart2 },
   ];
 
-  if (role === "ADMIN" || role === "MANAGER") {
+  if (role === "ADMIN" || role === "MANAGER" || role === "OWNER") {
     navItems.push(
       { name: "Documents", href: "/management/document", icon: FileText }
     );
   }
 
-  if (role === "ADMIN") {
+  if (role === "ADMIN" || role === "OWNER") {
     navItems.push(
       { name: "Invoices & Billing", href: "/management/invoices", icon: Receipt },
       { name: "KOT History Logs", href: "/management/kots", icon: ChefHat },

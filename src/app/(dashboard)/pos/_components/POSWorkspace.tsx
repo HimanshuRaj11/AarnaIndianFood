@@ -36,7 +36,7 @@ interface POSWorkspaceProps {
   initialBranchId: string;
   branchName: string;
   cashierName: string;
-  role: "ADMIN" | "MANAGER" | "STAFF";
+  role: "ADMIN" | "MANAGER" | "STAFF" | "OWNER";
   recentInvoices: Array<{ id: string; invoiceNo: string; total: number; createdAt: string }>;
   activeKots: Array<{ id: string; kotNo: string; tableNo: string; status: "PENDING" | "PREPARING" | "SERVED" | "CANCELLED"; createdAt: string }>;
   initialCompany: { id: string; name: string; currencyCode: string; currencySymbol: string };
