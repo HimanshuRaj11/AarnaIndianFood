@@ -19,7 +19,8 @@ import {
   BarChart2,
   ChevronLeft,
   ChevronRight,
-  User
+  User,
+  FileText
 } from "lucide-react";
 import { useState } from "react";
 
@@ -48,6 +49,12 @@ export default function DashboardNav({ role, userName }: DashboardNavProps) {
     { name: "My Profile", href: "/profile", icon: User },
     { name: "Data Summary", href: "/management/data-summary", icon: BarChart2 },
   ];
+
+  if (role === "ADMIN" || role === "MANAGER") {
+    navItems.push(
+      { name: "Documents", href: "/management/document", icon: FileText }
+    );
+  }
 
   if (role === "ADMIN") {
     navItems.push(
