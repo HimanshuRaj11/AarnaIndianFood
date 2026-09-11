@@ -13,6 +13,8 @@ interface PageProps {
 export default async function KOTDetailPage({ params }: PageProps) {
   const { id } = await params;
   const user = await getCurrentUser();
+  const company = await prisma.company.findFirst();
+  const currencySymbol = company?.currencySymbol || "$";
   if (!user) {
     return (
       <div className="p-8 max-w-4xl mx-auto mt-12 bg-zinc-900 border border-zinc-800 rounded-2xl">
@@ -113,9 +115,9 @@ export default async function KOTDetailPage({ params }: PageProps) {
                   <div key={item.id} className="flex justify-between items-center text-xs bg-zinc-950/40 p-2.5 border border-zinc-950 rounded-xl">
                     <div>
                       <span className="font-bold text-white block">{item.name}</span>
-                      <span className="text-zinc-500 text-[10px]">{item.quantity} x ₹{item.price}</span>
+                      <span className="text-zinc-500 text-[10px]">{item.quantity} x {currencySymbol}{item.price}</span>
                     </div>
-                    <span className="font-bold text-zinc-300">₹{item.total}</span>
+                    <span className="font-bold text-zinc-300">{currencySymbol}{item.total}</span>
                   </div>
                 ))}
               </div>
@@ -125,21 +127,21 @@ export default async function KOTDetailPage({ params }: PageProps) {
             <div className="border-t border-zinc-800 pt-4 space-y-2 text-xs">
               <div className="flex justify-between text-zinc-400">
                 <span>Subtotal</span>
-                <span>₹{invoice.subtotal}</span>
+                <span>{currencySymbol}{invoice.subtotal}</span>
               </div>
               {invoice.discount > 0 && (
                 <div className="flex justify-between text-zinc-400">
                   <span>Discount</span>
-                  <span>-₹{invoice.discount}</span>
+                  <span>-{currencySymbol}{invoice.discount}</span>
                 </div>
               )}
               <div className="flex justify-between text-zinc-400">
                 <span>GST Tax</span>
-                <span>₹{invoice.taxAmount}</span>
+                <span>{currencySymbol}{invoice.taxAmount}</span>
               </div>
               <div className="flex justify-between items-center pt-2 border-t border-zinc-800 text-sm font-extrabold">
                 <span className="text-white uppercase tracking-wider">Total Billed</span>
-                <span className="text-amber-500 text-base font-black">₹{invoice.total}</span>
+                <span className="text-amber-500 text-base font-black">{currencySymbol}{invoice.total}</span>
               </div>
             </div>
 

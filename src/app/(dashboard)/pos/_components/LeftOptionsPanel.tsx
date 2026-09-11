@@ -13,8 +13,6 @@ interface LeftOptionsPanelProps {
   setTableNo: (val: string) => void;
   kotNotes: string;
   setKotNotes: (val: string) => void;
-  generateKOT: boolean;
-  setGenerateKOT: (val: boolean) => void;
   discountType: "PERCENT" | "FLAT" | "NONE" | "EXEMPTED";
   setDiscountType: (val: "PERCENT" | "FLAT" | "NONE" | "EXEMPTED") => void;
   discountValue: number;
@@ -25,6 +23,7 @@ interface LeftOptionsPanelProps {
   loading: boolean;
   billType: "BILL" | "KOT";
   setBillType: (val: "BILL" | "KOT") => void;
+  isEditingKOT?: boolean;
 }
 
 export default function LeftOptionsPanel({
@@ -36,8 +35,6 @@ export default function LeftOptionsPanel({
   setTableNo,
   kotNotes,
   setKotNotes,
-  generateKOT,
-  setGenerateKOT,
   discountType,
   setDiscountType,
   discountValue,
@@ -47,7 +44,8 @@ export default function LeftOptionsPanel({
   handleKOT,
   loading,
   billType,
-  setBillType
+  setBillType,
+  isEditingKOT = false
 }: LeftOptionsPanelProps) {
   const company = usePOSStore((state) => state.company);
   const currencySymbol = company?.currencySymbol || "$";
@@ -141,29 +139,15 @@ export default function LeftOptionsPanel({
           </div>
         </div>
 
-        {/* Generate KOT Checkbox */}
-        <div className="flex items-center gap-2 pt-0.5">
-          <input
-            type="checkbox"
-            id="generate-kot-checkbox"
-            checked={generateKOT}
-            onChange={(e) => setGenerateKOT(e.target.checked)}
-            className="w-3.5 h-3.5 accent-amber-500 bg-zinc-950 border-zinc-850 rounded text-amber-500 cursor-pointer"
-          />
-          <label htmlFor="generate-kot-checkbox" className="text-[8.5px] font-bold uppercase tracking-wider text-zinc-400 cursor-pointer select-none">
-            Generate KOT on Checkout
-          </label>
-        </div>
-
-        {/* Direct KOT send button */}
+        {/* Direct KOT send / update button */}
         <button
           type="button"
           onClick={handleKOT}
           disabled={loading}
-          className="w-full py-1.5 bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500/20 text-amber-400 font-bold rounded-lg text-[9px] uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer disabled:opacity-40"
+          className="w-full py-2 bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500/20 text-amber-400 font-extrabold rounded-lg text-[9px] uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all cursor-pointer disabled:opacity-40 shadow-sm"
         >
-          <ChefHat className="w-3 h-3" />
-          <span>Send KOT to Kitchen</span>
+          <ChefHat className="w-3.5 h-3.5 text-amber-400" />
+          <span>{isEditingKOT ? "Update KOT & Print" : "Send KOT to Kitchen"}</span>
         </button>
       </div>
 

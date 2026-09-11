@@ -45,9 +45,9 @@ export async function loginUser(prevState: any, formData: FormData) {
             country: "India",
             zipCode: "110001",
             phone: "+91 11 2341 5678",
-            currencySymbol: "₹",
-            currencyCode: "INR",
-            currencyName: "Indian Rupee",
+            currencySymbol: "$",
+            currencyCode: "GYD",
+            currencyName: "Guyanese Dollar",
           },
         });
       }

@@ -29,9 +29,10 @@ interface InvoiceListProps {
   branches: Branch[];
   initialInvoices: Invoice[];
   initialBranchId: string;
+  currencySymbol: string;
 }
 
-export default function InvoiceList({ branches, initialInvoices, initialBranchId }: InvoiceListProps) {
+export default function InvoiceList({ branches, initialInvoices, initialBranchId, currencySymbol }: InvoiceListProps) {
   const [branchId, setBranchId] = useState(initialBranchId);
   const [invoices, setInvoices] = useState<Invoice[]>(initialInvoices);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -302,7 +303,7 @@ export default function InvoiceList({ branches, initialInvoices, initialBranchId
                     </span>
                   </td>
                   <td className="px-6 py-4 text-right font-black text-amber-500">
-                    ₹{inv.total.toFixed(2)}
+                    {currencySymbol}{inv.total.toFixed(2)}
                   </td>
                 </tr>
               ))

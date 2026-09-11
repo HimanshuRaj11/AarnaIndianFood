@@ -27,6 +27,9 @@ export default async function PublicMenuPage() {
     category: p.category,
   }));
 
+  const company = await prisma.company.findFirst();
+  const currencySymbol = company?.currencySymbol || "$";
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 space-y-12">
       <div className="text-center space-y-3">
@@ -37,7 +40,7 @@ export default async function PublicMenuPage() {
         </p>
       </div>
 
-      <PublicMenu initialProducts={products} categories={categories} />
+      <PublicMenu initialProducts={products} categories={categories} currencySymbol={currencySymbol} />
     </div>
   );
 }

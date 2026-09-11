@@ -45,6 +45,7 @@ interface DashboardStatsProps {
   activeKOTsList: ActiveKOT[];
   categorySales: CategorySale[];
   branchName: string;
+  currencySymbol: string;
 }
 
 export default function DashboardStats({
@@ -52,7 +53,8 @@ export default function DashboardStats({
   recentInvoices,
   activeKOTsList,
   categorySales,
-  branchName
+  branchName,
+  currencySymbol
 }: DashboardStatsProps) {
   
   // Calculate max sales value for relative SVG charting
@@ -118,7 +120,7 @@ export default function DashboardStats({
             <span>Gross Revenue</span>
           </div>
           <div className="mt-4 flex items-baseline gap-1">
-            <span className="text-2xl font-black text-white">₹{stats.totalRevenue.toLocaleString()}</span>
+            <span className="text-2xl font-black text-white">{currencySymbol}{stats.totalRevenue.toLocaleString()}</span>
           </div>
           <div className="mt-2 text-[10px] text-zinc-500">Accumulated completed sales</div>
         </div>
@@ -152,7 +154,7 @@ export default function DashboardStats({
             <span>Average Ticket</span>
           </div>
           <div className="mt-4 flex items-baseline gap-1">
-            <span className="text-2xl font-black text-white">₹{Math.round(stats.avgOrderValue)}</span>
+            <span className="text-2xl font-black text-white">{currencySymbol}{Math.round(stats.avgOrderValue)}</span>
           </div>
           <div className="mt-2 text-[10px] text-zinc-500">Average billing size per check</div>
         </div>
@@ -241,7 +243,7 @@ export default function DashboardStats({
                       fill="#f59e0b" 
                       className="text-[10px] font-extrabold font-mono opacity-0 group-hover/dot:opacity-100 transition-opacity duration-200"
                     >
-                      ₹{Math.round(p.val).toLocaleString()}
+                      {currencySymbol}{Math.round(p.val).toLocaleString()}
                     </text>
                   </g>
                 ))}
@@ -289,7 +291,7 @@ export default function DashboardStats({
                             {inv.paymentMode}
                           </span>
                         </td>
-                        <td className="px-6 py-3.5 text-right font-bold text-amber-500">₹{inv.total}</td>
+                        <td className="px-6 py-3.5 text-right font-bold text-amber-500">{currencySymbol}{inv.total}</td>
                       </tr>
                     ))
                   )}

@@ -12,6 +12,9 @@ export default async function DataSummaryPage() {
     redirect("/login");
   }
 
+  const company = await prisma.company.findFirst();
+  const currencySymbol = company?.currencySymbol || "$";
+
   const whereClause: any = {
     invoice: {
       delete: false,
@@ -130,7 +133,7 @@ export default async function DataSummaryPage() {
             <span>Revenue</span>
           </div>
           <div className="mt-4">
-            <span className="text-2xl font-black text-white">₹{grandTotalRevenue.toLocaleString()}</span>
+            <span className="text-2xl font-black text-white">{currencySymbol}{grandTotalRevenue.toLocaleString()}</span>
             <span className="text-zinc-500 text-xs block mt-1.5">Accumulated sales volume</span>
           </div>
         </div>
@@ -159,7 +162,7 @@ export default async function DataSummaryPage() {
           </div>
           <div className="mt-4">
             <span className="text-sm font-extrabold text-white block truncate">{leadingCategory.category}</span>
-            <span className="text-zinc-500 text-xs block mt-1">(₹{Math.round(leadingCategory.revenue).toLocaleString()} sales)</span>
+            <span className="text-zinc-500 text-xs block mt-1">({currencySymbol}{Math.round(leadingCategory.revenue).toLocaleString()} sales)</span>
           </div>
         </div>
 
@@ -220,7 +223,7 @@ export default async function DataSummaryPage() {
                     <div key={idx} className="space-y-1.5">
                       <div className="flex justify-between text-xs font-semibold">
                         <span className="text-zinc-200">{product.name}</span>
-                        <span className="text-emerald-400 font-extrabold">₹{product.revenue.toLocaleString()}</span>
+                        <span className="text-emerald-400 font-extrabold">{currencySymbol}{product.revenue.toLocaleString()}</span>
                       </div>
                       <div className="w-full bg-zinc-950 rounded-full h-1.5 overflow-hidden">
                         <div 
@@ -262,7 +265,7 @@ export default async function DataSummaryPage() {
                       <tr key={idx} className="hover:bg-zinc-800/10 transition-colors">
                         <td className="px-6 py-3 font-semibold text-white">{cat.category}</td>
                         <td className="px-6 py-3 text-zinc-400">{cat.qty} units</td>
-                        <td className="px-6 py-3 text-right font-extrabold text-amber-500">₹{cat.revenue.toLocaleString()}</td>
+                        <td className="px-6 py-3 text-right font-extrabold text-amber-500">{currencySymbol}{cat.revenue.toLocaleString()}</td>
                       </tr>
                     ))
                   )}

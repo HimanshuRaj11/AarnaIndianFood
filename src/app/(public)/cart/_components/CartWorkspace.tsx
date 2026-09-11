@@ -19,9 +19,10 @@ interface CartItem {
 
 interface CartWorkspaceProps {
   branches: BranchItem[];
+  currencySymbol: string;
 }
 
-export default function CartWorkspace({ branches }: CartWorkspaceProps) {
+export default function CartWorkspace({ branches, currencySymbol }: CartWorkspaceProps) {
   const router = useRouter();
   const [cart, setCart] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(false);
@@ -155,7 +156,7 @@ export default function CartWorkspace({ branches }: CartWorkspaceProps) {
                 <div className="flex-grow min-w-0 pr-4">
                   <h4 className="font-extrabold text-white text-xs sm:text-sm truncate">{item.name}</h4>
                   <span className="text-[10px] text-amber-500 font-extrabold mt-0.5 block">
-                    ₹{item.price} each
+                    {currencySymbol}{item.price} each
                   </span>
                 </div>
 
@@ -262,15 +263,15 @@ export default function CartWorkspace({ branches }: CartWorkspaceProps) {
           <div className="border-t border-zinc-850 pt-4 space-y-2.5 text-xs text-zinc-400">
             <div className="flex justify-between">
               <span>Subtotal</span>
-              <span className="font-semibold text-white">₹{cartSubtotal}</span>
+              <span className="font-semibold text-white">{currencySymbol}{cartSubtotal}</span>
             </div>
             <div className="flex justify-between">
               <span>VAT (14%)</span>
-              <span className="font-semibold text-white">₹{vatAmount}</span>
+              <span className="font-semibold text-white">{currencySymbol}{vatAmount}</span>
             </div>
             <div className="flex justify-between items-center pt-2 border-t border-zinc-800 text-sm font-extrabold text-white">
               <span>Grand Total</span>
-              <span className="text-base text-amber-500">₹{cartTotal}</span>
+              <span className="text-base text-amber-500">{currencySymbol}{cartTotal}</span>
             </div>
           </div>
 

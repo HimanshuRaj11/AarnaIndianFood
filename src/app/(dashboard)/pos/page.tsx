@@ -9,12 +9,56 @@ export default async function POSPage() {
     redirect("/login");
   }
 
-  // Fetch all active branches
-  const dbBranches = await prisma.branch.findMany({
-    where: { active: true },
-    orderBy: { name: "asc" }
-  });
-  const branches = dbBranches.map((b) => ({ id: b.id, name: b.name }));
+  // Fetch all active branches along with their configured printer stations
+  let dbBranches: any[] = [];
+  try {
+    dbBranches = await prisma.branch.findMany({
+      where: { active: true },
+      include: {
+        printers: {
+          select: {
+            id: true,
+            name: true,
+            printerName: true,
+            type: true,
+            isDefault: true,
+            branchId: true,
+          },
+        },
+      },
+      orderBy: { name: "asc" },
+    });
+  } catch (err) {
+    console.warn("Could not fetch branches with printers include, falling back:", err);
+    dbBranches = await prisma.branch.findMany({
+      where: { active: true },
+      orderBy: { name: "asc" },
+    });
+  }
+
+  const branches = dbBranches.map((b) => ({
+    id: b.id,
+    name: b.name,
+    printerName: b.printerName || undefined,
+    street: b.street,
+    city: b.city,
+    phone: b.phone,
+    printers: b.printers || [],
+  }));
+
+  // Fetch cashier's preferred station printers
+  let dbUser: any = null;
+  try {
+    dbUser = await prisma.user.findUnique({
+      where: { id: user.userId },
+      select: {
+        receiptPrinter: { select: { id: true, name: true, printerName: true } },
+        kotPrinter: { select: { id: true, name: true, printerName: true } },
+      },
+    });
+  } catch (err) {
+    console.warn("Could not fetch user printer preferences:", err);
+  }
 
   // Fetch all products available for this branch or global products (where branchId is null)
   const dbProducts = await prisma.product.findMany({
@@ -53,24 +97,48 @@ export default async function POSPage() {
   const userBranch = branches.find((b) => b.id === user.branchId);
   const branchName = userBranch ? userBranch.name : "Aarna Indian Foods";
 
-  // Fetch recent invoices (last 5)
+  // Fetch recent invoices (last 10) with full items and customer details
   const dbRecentInvoices = await prisma.invoice.findMany({
-    where: user.role === "ADMIN" ? { delete: false } : {
+    where: user.role === "ADMIN" ? { delete: false, invoiceStatus: { not: "HELD" } } : {
       branchId: user.branchId || undefined,
-      delete: false
+      delete: false,
+      invoiceStatus: { not: "HELD" }
+    },
+    include: {
+      items: true
     },
     orderBy: { createdAt: "desc" },
-    take: 5
+    take: 10
   });
   
-  const recentInvoices = dbRecentInvoices.map((inv) => ({
-    id: inv.id,
-    invoiceNo: inv.invoiceId,
-    total: inv.total,
-    createdAt: inv.createdAt.toISOString()
-  }));
+  const recentInvoices = dbRecentInvoices.map((inv) => {
+    let tableNo = "";
+    if (inv.notes && inv.notes.startsWith("Table: ")) {
+      tableNo = inv.notes.replace("Table: ", "").trim();
+    }
+    return {
+      id: inv.id,
+      invoiceNo: inv.invoiceId,
+      subtotal: inv.subtotal,
+      discount: inv.discount,
+      taxAmount: inv.taxAmount,
+      total: inv.total,
+      paymentMode: inv.paymentMode,
+      clientName: inv.clientName || "",
+      clientPhone: inv.clientPhone || "",
+      tableNo,
+      items: inv.items.map((it) => ({
+        productId: it.productId || "",
+        name: it.name,
+        price: it.price,
+        quantity: it.quantity,
+        total: it.total,
+      })),
+      createdAt: inv.createdAt.toISOString()
+    };
+  });
 
-  // Fetch active KOTs (last 5 pending/preparing)
+  // Fetch active KOTs (pending/preparing) with their items
   const dbActiveKots = await prisma.kOT.findMany({
     where: user.role === "ADMIN" ? {
       status: { in: ["PENDING", "PREPARING"] }
@@ -78,8 +146,11 @@ export default async function POSPage() {
       branchId: user.branchId || undefined,
       status: { in: ["PENDING", "PREPARING"] }
     },
+    include: {
+      items: true
+    },
     orderBy: { createdAt: "desc" },
-    take: 5
+    take: 15
   });
 
   const activeKots = dbActiveKots.map((kot) => ({
@@ -87,8 +158,68 @@ export default async function POSPage() {
     kotNo: kot.kotNo,
     tableNo: kot.tableNo,
     status: kot.status as "PENDING" | "PREPARING" | "SERVED" | "CANCELLED",
+    items: kot.items.map((item) => ({
+      id: item.id,
+      productId: item.productId || "",
+      name: item.name,
+      quantity: item.quantity,
+      notes: item.notes || "",
+    })),
     createdAt: kot.createdAt.toISOString()
   }));
+
+  // Fetch held invoices from DB
+  const dbHeldInvoices = await prisma.invoice.findMany({
+    where: user.role === "ADMIN" ? { invoiceStatus: "HELD", delete: false } : {
+      branchId: user.branchId || undefined,
+      invoiceStatus: "HELD",
+      delete: false
+    },
+    include: {
+      items: true
+    },
+    orderBy: { createdAt: "desc" },
+    take: 20
+  });
+
+  const initialHeldInvoices = dbHeldInvoices.map((inv) => {
+    let parsedNotes = { kotNotes: "", discountType: "NONE", discountValue: 0, tableNo: "" };
+    if (inv.notes) {
+      try {
+        parsedNotes = JSON.parse(inv.notes);
+      } catch (e) {
+        if (inv.notes.startsWith("Table: ")) {
+          parsedNotes.tableNo = inv.notes.replace("Table: ", "").trim();
+        }
+      }
+    }
+
+    return {
+      id: inv.invoiceId,
+      dbId: inv.id,
+      cart: inv.items.map((it) => {
+        const isComp = it.name.startsWith("*COMP* ");
+        const cleanName = isComp ? it.name.replace("*COMP* ", "") : it.name;
+        return {
+          productId: it.productId || "",
+          name: cleanName,
+          price: it.price,
+          quantity: it.quantity,
+          isComplement: isComp,
+          specification: ""
+        };
+      }),
+      clientName: inv.clientName || "",
+      clientPhone: inv.clientPhone || "",
+      branchId: inv.branchId,
+      tableNo: parsedNotes.tableNo || "",
+      kotNotes: parsedNotes.kotNotes || "",
+      discountType: (parsedNotes.discountType || (inv.discount > 0 ? "FLAT" : "NONE")) as "PERCENT" | "FLAT" | "NONE" | "EXEMPTED",
+      discountValue: parsedNotes.discountValue || inv.discount || 0,
+      paymentMode: (inv.paymentMode || "CASH") as "CASH" | "CARD" | "UPI" | "NET_BANKING" | "CHEQUE",
+      createdAt: inv.createdAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+  });
 
   // Fetch company details
   let dbCompany = await prisma.company.findFirst();
@@ -112,8 +243,21 @@ export default async function POSPage() {
   const initialCompany = {
     id: dbCompany.id,
     name: dbCompany.name,
+    street: dbCompany.street,
+    city: dbCompany.city,
+    phone: dbCompany.phone,
+    VATNumber: dbCompany.VATNumber || undefined,
     currencyCode: dbCompany.currencyCode,
-    currencySymbol: dbCompany.currencySymbol
+    currencySymbol: dbCompany.currencySymbol,
+    branches: dbBranches.map((b) => ({
+      id: b.id,
+      name: b.name,
+      printerName: b.printerName || undefined,
+      street: b.street,
+      city: b.city,
+      phone: b.phone,
+      printers: b.printers,
+    }))
   };
 
   return (
@@ -127,7 +271,10 @@ export default async function POSPage() {
       role={user.role}
       recentInvoices={recentInvoices}
       activeKots={activeKots}
+      initialHeldInvoices={initialHeldInvoices}
       initialCompany={initialCompany}
+      userReceiptPrinter={dbUser?.receiptPrinter?.printerName || ""}
+      userKotPrinter={dbUser?.kotPrinter?.printerName || ""}
     />
   );
 }

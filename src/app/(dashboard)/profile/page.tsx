@@ -3,6 +3,7 @@ import prisma from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { User, Mail, ShieldAlert, Award, Calendar, Landmark, MapPin, Receipt, ArrowRight, ReceiptCent } from "lucide-react";
+import UserPrinterPreferences from "./_components/UserPrinterPreferences";
 
 export const revalidate = 0; // Fresh details each load
 
@@ -11,6 +12,9 @@ export default async function ProfilePage() {
   if (!session) {
     redirect("/login");
   }
+
+  const company = await prisma.company.findFirst();
+  const currencySymbol = company?.currencySymbol || "$";
 
   // Fetch full user records from DB, including branch mappings
   const user = await prisma.user.findUnique({
@@ -51,6 +55,18 @@ export default async function ProfilePage() {
       }
     }
   });
+
+  // Query branch printers available to this user
+  const branchPrinters = user.branchId
+    ? await prisma.printer.findMany({
+        where: { branchId: user.branchId },
+        select: { id: true, name: true, printerName: true, type: true, isDefault: true },
+        orderBy: { name: "asc" },
+      })
+    : await prisma.printer.findMany({
+        select: { id: true, name: true, printerName: true, type: true, isDefault: true },
+        orderBy: { name: "asc" },
+      });
 
   // Calculate metrics
   const totalBills = invoices.length;
@@ -160,16 +176,24 @@ export default async function ProfilePage() {
 
             <div className="bg-zinc-900 border border-zinc-850 rounded-2xl p-5">
               <span className="text-[9px] font-bold text-zinc-500 uppercase block tracking-wider">Gross Billed Value</span>
-              <span className="text-2xl font-black text-amber-500 block mt-2">₹{Math.round(totalSalesRevenue).toLocaleString()}</span>
+              <span className="text-2xl font-black text-amber-500 block mt-2">{currencySymbol}{Math.round(totalSalesRevenue).toLocaleString()}</span>
               <span className="text-[10px] text-zinc-550 block mt-1">Sales logged to database</span>
             </div>
 
             <div className="bg-zinc-900 border border-zinc-850 rounded-2xl p-5">
               <span className="text-[9px] font-bold text-zinc-500 uppercase block tracking-wider">Average Ticket</span>
-              <span className="text-2xl font-black text-emerald-450 block mt-2">₹{Math.round(avgSalesValue).toLocaleString()}</span>
+              <span className="text-2xl font-black text-emerald-450 block mt-2">{currencySymbol}{Math.round(avgSalesValue).toLocaleString()}</span>
               <span className="text-[10px] text-zinc-550 block mt-1">Value per transaction</span>
             </div>
           </div>
+
+          {/* User Station & Hardware Preferences */}
+          <UserPrinterPreferences
+            printers={branchPrinters}
+            currentReceiptPrinterId={user.receiptPrinterId}
+            currentKotPrinterId={user.kotPrinterId}
+            branchName={user.branch?.name}
+          />
 
           {/* Invoices List */}
           <div className="bg-zinc-900 border border-zinc-850 rounded-2xl overflow-hidden">
@@ -199,7 +223,7 @@ export default async function ProfilePage() {
                       </div>
                       
                       <div className="text-right">
-                        <div className="font-black text-amber-500">₹{inv.total.toFixed(2)}</div>
+                        <div className="font-black text-amber-500">{currencySymbol}{inv.total.toFixed(2)}</div>
                         <span className="inline-flex px-1.5 py-0.5 bg-zinc-950 text-[9px] text-zinc-400 border border-zinc-850 rounded font-semibold uppercase mt-1">
                           {inv.paymentMode}
                         </span>

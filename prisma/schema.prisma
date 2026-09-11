@@ -51,23 +51,42 @@ model Branch {
   products        Product[]
   invoices        Invoice[]
   kots            KOT[]
+  printers        Printer[]
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 }
 
 model User {
+  id               String    @id @default(cuid())
+  name             String
+  email            String    @unique
+  passwordHash     String
+  role             Role      @default(STAFF)
+  branchId         String?
+  branch           Branch?   @relation(fields: [branchId], references: [id], onDelete: SetNull)
+  phone            String?
+  isActive         Boolean   @default(true)
+  department       String?
+  designation      String?
+  receiptPrinterId String?
+  receiptPrinter   Printer?  @relation("UserReceiptPrinter", fields: [receiptPrinterId], references: [id], onDelete: SetNull)
+  kotPrinterId     String?
+  kotPrinter       Printer?  @relation("UserKotPrinter", fields: [kotPrinterId], references: [id], onDelete: SetNull)
+  invoices         Invoice[]
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+}
+
+model Printer {
   id           String    @id @default(cuid())
-  name         String
-  email        String    @unique
-  passwordHash String
-  role         Role      @default(STAFF)
-  branchId     String?
-  branch       Branch?   @relation(fields: [branchId], references: [id], onDelete: SetNull)
-  phone        String?
-  isActive     Boolean   @default(true)
-  department   String?
-  designation  String?
-  invoices     Invoice[]
+  name         String    // Friendly display name (e.g. "Counter 1 Thermal", "Kitchen Master")
+  printerName  String    // Device name in OS / QZ Tray (e.g. "POS-80", "EPSON-TM-T88VI")
+  type         String    @default("RECEIPT") // "RECEIPT" | "KOT" | "BOTH"
+  isDefault    Boolean   @default(false)
+  branchId     String
+  branch       Branch    @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  receiptUsers User[]    @relation("UserReceiptPrinter")
+  kotUsers     User[]    @relation("UserKotPrinter")
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 }

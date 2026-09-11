@@ -1,27 +1,31 @@
 import React from "react";
 import Link from "next/link";
 import { Utensils, Star, ShieldCheck, MapPin, ChevronRight, Award } from "lucide-react";
+import prisma from "@/lib/prisma";
 
-export default function PublicHomePage() {
+export default async function PublicHomePage() {
+  const company = await prisma.company.findFirst();
+  const currencySymbol = company?.currencySymbol || "$";
+
   const featuredDishes = [
     {
       name: "Tandoori Butter Chicken",
       desc: "Charcoal-grilled chicken simmered in rich creamy tomato butter sauce with hand-ground spices.",
-      price: "₹380.00",
+      price: `${currencySymbol}380.00`,
       tag: "Best Seller",
       imageText: "🍗"
     },
     {
       name: "Paneer Tikka Masala",
       desc: "Marinated cottage cheese blocks wood-fired in clay oven, cooked in a spicy onion tomato masala.",
-      price: "₹320.00",
+      price: `${currencySymbol}320.00`,
       tag: "Vegetarian Special",
       imageText: "🧀"
     },
     {
       name: "Hyderabadi Dum Biryani",
       desc: "Fragrant basmati rice layered with spiced meat and fresh herbs, slow-cooked in traditional clay pot.",
-      price: "₹350.00",
+      price: `${currencySymbol}350.00`,
       tag: "Popular",
       imageText: "🍛"
     }

@@ -13,9 +13,10 @@ interface ProductModalProps {
   product?: any;
   categories: string[];
   branches: BranchOption[];
+  currencySymbol: string;
 }
 
-export default function ProductModal({ product, categories, branches }: ProductModalProps) {
+export default function ProductModal({ product, categories, branches, currencySymbol }: ProductModalProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState(product?.name || "");
   const [code, setCode] = useState(product?.code || "");
@@ -128,7 +129,7 @@ export default function ProductModal({ product, categories, branches }: ProductM
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-zinc-300 uppercase block">Price (₹)</label>
+                  <label className="text-xs font-semibold text-zinc-300 uppercase block">Price ({currencySymbol})</label>
                   <input
                     type="number"
                     required

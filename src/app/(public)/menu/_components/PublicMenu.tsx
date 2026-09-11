@@ -15,9 +15,10 @@ interface Product {
 interface PublicMenuProps {
   initialProducts: Product[];
   categories: string[];
+  currencySymbol: string;
 }
 
-export default function PublicMenu({ initialProducts, categories }: PublicMenuProps) {
+export default function PublicMenu({ initialProducts, categories, currencySymbol }: PublicMenuProps) {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [addedItems, setAddedItems] = useState<Record<string, boolean>>({});
@@ -140,7 +141,7 @@ export default function PublicMenu({ initialProducts, categories }: PublicMenuPr
                 </div>
 
                 <div className="flex items-center justify-between border-t border-zinc-850 mt-5 pt-4">
-                  <span className="text-base font-black text-amber-500">₹{product.price}</span>
+                  <span className="text-base font-black text-amber-500">{currencySymbol}{product.price}</span>
                   <button
                     onClick={() => addToCart(product)}
                     className={`py-2 px-4 rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all ${

@@ -16,6 +16,9 @@ export default async function PublicCartPage() {
     name: b.name,
   }));
 
+  const company = await prisma.company.findFirst();
+  const currencySymbol = company?.currencySymbol || "$";
+
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-16 space-y-12">
       <div className="text-center space-y-3">
@@ -26,7 +29,7 @@ export default async function PublicCartPage() {
         </p>
       </div>
 
-      <CartWorkspace branches={branches} />
+      <CartWorkspace branches={branches} currencySymbol={currencySymbol} />
     </div>
   );
 }

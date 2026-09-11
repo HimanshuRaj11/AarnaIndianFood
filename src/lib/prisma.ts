@@ -17,6 +17,11 @@ const pool = globalForPrisma.pool || new Pool({
 
 const adapter = new PrismaPg(pool)
 
+// In dev mode, if the cached client does not have newly added models like 'printer', invalidate it
+if (globalForPrisma.prisma && !('printer' in (globalForPrisma.prisma as unknown as Record<string, unknown>))) {
+  globalForPrisma.prisma = undefined;
+}
+
 const prisma = globalForPrisma.prisma || new PrismaClient({ adapter })
 
 if (process.env.NODE_ENV !== "production") {

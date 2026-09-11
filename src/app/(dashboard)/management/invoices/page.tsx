@@ -56,6 +56,9 @@ export default async function InvoicesPage() {
 
   const branchList = branches.map((b) => ({ id: b.id, name: b.name }));
 
+  const company = await prisma.company.findFirst();
+  const currencySymbol = company?.currencySymbol || "$";
+
   return (
     <div className="p-6 md:p-8 space-y-8 max-w-[1200px] mx-auto">
       <div className="border-b border-zinc-800/80 pb-6">
@@ -69,6 +72,7 @@ export default async function InvoicesPage() {
         branches={branchList} 
         initialInvoices={formattedInvoices} 
         initialBranchId={initialBranchId} 
+        currencySymbol={currencySymbol}
       />
     </div>
   );

@@ -11,6 +11,9 @@ export default async function PublicOrderPage({ searchParams }: PageProps) {
   const params = await searchParams;
   const orderNo = params.id ? params.id.trim() : "";
 
+  const company = await prisma.company.findFirst();
+  const currencySymbol = company?.currencySymbol || "$";
+
   let orderData = null;
   let errorMsg = "";
 
@@ -199,7 +202,7 @@ export default async function PublicOrderPage({ searchParams }: PageProps) {
             </div>
             <div className="border-t border-zinc-850 pt-4 flex justify-between items-center text-xs">
               <span className="text-zinc-500 uppercase font-bold tracking-wider">Total Charge</span>
-              <span className="text-sm font-black text-amber-500">₹{orderData.total}</span>
+              <span className="text-sm font-black text-amber-500">{currencySymbol}{orderData.total}</span>
             </div>
           </div>
 

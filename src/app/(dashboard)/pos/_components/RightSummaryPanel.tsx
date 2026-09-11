@@ -15,7 +15,8 @@ import {
   CreditCard, 
   QrCode, 
   Landmark, 
-  Building2 
+  Building2,
+  PauseCircle
 } from "lucide-react";
 import { usePOSStore } from "@/lib/store";
 
@@ -43,6 +44,8 @@ interface RightSummaryPanelProps {
   handleCheckout: () => void;
   loading: boolean;
   billType: "BILL" | "KOT";
+  handleHoldInvoice: () => void;
+  isEditingHeld?: boolean;
 }
 
 export default function RightSummaryPanel({
@@ -59,7 +62,9 @@ export default function RightSummaryPanel({
   setPaymentMode,
   handleCheckout,
   loading,
-  billType
+  billType,
+  handleHoldInvoice,
+  isEditingHeld = false
 }: RightSummaryPanelProps) {
   const company = usePOSStore((state) => state.company);
   const currencySymbol = company?.currencySymbol || "$";
@@ -91,13 +96,29 @@ export default function RightSummaryPanel({
             {cart.reduce((sum, item) => sum + item.quantity, 0)} items
           </span>
         </div>
-        <button
-          onClick={clearCart}
-          className="text-[9px] bg-zinc-800 border border-zinc-700 text-zinc-400 hover:text-white px-2 py-1 rounded font-bold uppercase tracking-wider flex items-center gap-1 cursor-pointer transition-all"
-        >
-          <RotateCcw className="w-3 h-3" />
-          <span>Reset</span>
-        </button>
+        <div className="flex items-center gap-1.5">
+          <button
+            type="button"
+            onClick={handleHoldInvoice}
+            disabled={cart.length === 0}
+            className={`text-[9px] border px-2 py-1 rounded font-bold uppercase tracking-wider flex items-center gap-1 cursor-pointer transition-all disabled:opacity-40 disabled:pointer-events-none ${
+              isEditingHeld 
+                ? "bg-amber-500 text-black border-amber-600 shadow-md shadow-amber-500/20" 
+                : "bg-amber-500/10 border-amber-500/30 text-amber-400 hover:bg-amber-500/20"
+            }`}
+            title={isEditingHeld ? "Save updates to this held bill" : "Hold this bill for later"}
+          >
+            <PauseCircle className="w-3 h-3" />
+            <span>{isEditingHeld ? "Update Held" : "Hold Bill"}</span>
+          </button>
+          <button
+            onClick={clearCart}
+            className="text-[9px] bg-zinc-800 border border-zinc-700 text-zinc-400 hover:text-white px-2 py-1 rounded font-bold uppercase tracking-wider flex items-center gap-1 cursor-pointer transition-all"
+          >
+            <RotateCcw className="w-3 h-3" />
+            <span>Reset</span>
+          </button>
+        </div>
       </div>
 
       {/* Message Banner */}

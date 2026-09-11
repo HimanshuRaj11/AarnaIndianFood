@@ -20,7 +20,8 @@ import {
   ChevronLeft,
   ChevronRight,
   User,
-  FileText
+  FileText,
+  Printer
 } from "lucide-react";
 import { useState } from "react";
 
@@ -62,6 +63,7 @@ export default function DashboardNav({ role, userName }: DashboardNavProps) {
       { name: "KOT History Logs", href: "/management/kots", icon: ChefHat },
       { name: "Staff Directory", href: "/management/staff", icon: Users },
       { name: "Branch Mappings", href: "/management/branches", icon: Building2 },
+      { name: "Printer Stations", href: "/management/printers", icon: Printer },
       { name: "Menu Catalog", href: "/management/products", icon: BookOpen },
       { name: "Menu Categories", href: "/management/categories", icon: Tags },
       { name: "Tax Configurations", href: "/management/taxes", icon: Percent },

@@ -172,6 +172,19 @@ exports.Prisma.UserScalarFieldEnum = {
   isActive: 'isActive',
   department: 'department',
   designation: 'designation',
+  receiptPrinterId: 'receiptPrinterId',
+  kotPrinterId: 'kotPrinterId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PrinterScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  printerName: 'printerName',
+  type: 'type',
+  isDefault: 'isDefault',
+  branchId: 'branchId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -288,6 +301,7 @@ exports.Prisma.ModelName = {
   Company: 'Company',
   Branch: 'Branch',
   User: 'User',
+  Printer: 'Printer',
   Category: 'Category',
   Tax: 'Tax',
   Product: 'Product',

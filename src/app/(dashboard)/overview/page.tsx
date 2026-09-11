@@ -125,6 +125,9 @@ export default async function OverviewPage() {
     createdAt: kot.createdAt.toISOString()
   }));
 
+  const company = await prisma.company.findFirst();
+  const currencySymbol = company?.currencySymbol || "$";
+
   return (
     <DashboardStats
       stats={stats}
@@ -132,6 +135,7 @@ export default async function OverviewPage() {
       activeKOTsList={activeKOTsList}
       categorySales={categoryAggregation}
       branchName={branchName}
+      currencySymbol={currencySymbol}
     />
   );
 }

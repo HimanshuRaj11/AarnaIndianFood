@@ -20,9 +20,10 @@ interface ProductTableProps {
   products: Product[];
   categories: string[];
   branches: Array<{ id: string; name: string }>;
+  currencySymbol: string;
 }
 
-export default function ProductTable({ products, categories, branches }: ProductTableProps) {
+export default function ProductTable({ products, categories, branches, currencySymbol }: ProductTableProps) {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -129,7 +130,7 @@ export default function ProductTable({ products, categories, branches }: Product
 
               <div className="border-t border-zinc-850/60 mt-4 pt-3.5 flex items-center justify-between">
                 <div className="space-y-1">
-                  <span className="text-base font-black text-amber-500 block">₹{p.price}</span>
+                  <span className="text-base font-black text-amber-500 block">{currencySymbol}{p.price}</span>
                   <span className="text-[9px] text-zinc-500 font-semibold block truncate max-w-[120px]">
                     {p.branchName}
                   </span>
@@ -140,6 +141,7 @@ export default function ProductTable({ products, categories, branches }: Product
                     product={p} 
                     categories={categories} 
                     branches={branches} 
+                    currencySymbol={currencySymbol}
                   />
                   <button
                     onClick={() => handleDelete(p.id, p.name)}

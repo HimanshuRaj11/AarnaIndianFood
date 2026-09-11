@@ -50,6 +50,9 @@ export default async function ProductsPage() {
   const categoryList = categories.map((c) => c.name);
   const branchList = branches.map((b) => ({ id: b.id, name: b.name }));
 
+  const company = await prisma.company.findFirst();
+  const currencySymbol = company?.currencySymbol || "$";
+
   return (
     <div className="p-6 md:p-8 space-y-8 max-w-6xl mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-800/80 pb-6">
@@ -59,7 +62,7 @@ export default async function ProductsPage() {
             CRUD menu cards, assign unique short-codes, categories, and branch operational mappings.
           </p>
         </div>
-        <ProductModal categories={categoryList} branches={branchList} />
+        <ProductModal categories={categoryList} branches={branchList} currencySymbol={currencySymbol} />
       </div>
 
       <div className="space-y-4">
@@ -68,6 +71,7 @@ export default async function ProductsPage() {
           products={productsList} 
           categories={categoryList} 
           branches={branchList} 
+          currencySymbol={currencySymbol}
         />
       </div>
     </div>

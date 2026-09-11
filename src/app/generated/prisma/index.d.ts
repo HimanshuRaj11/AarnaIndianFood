@@ -29,6 +29,11 @@ export type Branch = $Result.DefaultSelection<Prisma.$BranchPayload>
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
+ * Model Printer
+ * 
+ */
+export type Printer = $Result.DefaultSelection<Prisma.$PrinterPayload>
+/**
  * Model Category
  * 
  */
@@ -230,6 +235,16 @@ export class PrismaClient<
     * ```
     */
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.printer`: Exposes CRUD operations for the **Printer** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Printers
+    * const printers = await prisma.printer.findMany()
+    * ```
+    */
+  get printer(): Prisma.PrinterDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.category`: Exposes CRUD operations for the **Category** model.
@@ -744,6 +759,7 @@ export namespace Prisma {
     Company: 'Company',
     Branch: 'Branch',
     User: 'User',
+    Printer: 'Printer',
     Category: 'Category',
     Tax: 'Tax',
     Product: 'Product',
@@ -769,7 +785,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "company" | "branch" | "user" | "category" | "tax" | "product" | "invoice" | "invoiceItem" | "kOT" | "kOTItem"
+      modelProps: "company" | "branch" | "user" | "printer" | "category" | "tax" | "product" | "invoice" | "invoiceItem" | "kOT" | "kOTItem"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -992,6 +1008,80 @@ export namespace Prisma {
           count: {
             args: Prisma.UserCountArgs<ExtArgs>
             result: $Utils.Optional<UserCountAggregateOutputType> | number
+          }
+        }
+      }
+      Printer: {
+        payload: Prisma.$PrinterPayload<ExtArgs>
+        fields: Prisma.PrinterFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PrinterFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PrinterPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PrinterFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PrinterPayload>
+          }
+          findFirst: {
+            args: Prisma.PrinterFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PrinterPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PrinterFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PrinterPayload>
+          }
+          findMany: {
+            args: Prisma.PrinterFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PrinterPayload>[]
+          }
+          create: {
+            args: Prisma.PrinterCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PrinterPayload>
+          }
+          createMany: {
+            args: Prisma.PrinterCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PrinterCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PrinterPayload>[]
+          }
+          delete: {
+            args: Prisma.PrinterDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PrinterPayload>
+          }
+          update: {
+            args: Prisma.PrinterUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PrinterPayload>
+          }
+          deleteMany: {
+            args: Prisma.PrinterDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PrinterUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PrinterUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PrinterPayload>[]
+          }
+          upsert: {
+            args: Prisma.PrinterUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PrinterPayload>
+          }
+          aggregate: {
+            args: Prisma.PrinterAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePrinter>
+          }
+          groupBy: {
+            args: Prisma.PrinterGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PrinterGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PrinterCountArgs<ExtArgs>
+            result: $Utils.Optional<PrinterCountAggregateOutputType> | number
           }
         }
       }
@@ -1612,6 +1702,7 @@ export namespace Prisma {
     company?: CompanyOmit
     branch?: BranchOmit
     user?: UserOmit
+    printer?: PrinterOmit
     category?: CategoryOmit
     tax?: TaxOmit
     product?: ProductOmit
@@ -1734,6 +1825,7 @@ export namespace Prisma {
     products: number
     invoices: number
     kots: number
+    printers: number
   }
 
   export type BranchCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1741,6 +1833,7 @@ export namespace Prisma {
     products?: boolean | BranchCountOutputTypeCountProductsArgs
     invoices?: boolean | BranchCountOutputTypeCountInvoicesArgs
     kots?: boolean | BranchCountOutputTypeCountKotsArgs
+    printers?: boolean | BranchCountOutputTypeCountPrintersArgs
   }
 
   // Custom InputTypes
@@ -1782,6 +1875,13 @@ export namespace Prisma {
     where?: KOTWhereInput
   }
 
+  /**
+   * BranchCountOutputType without action
+   */
+  export type BranchCountOutputTypeCountPrintersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PrinterWhereInput
+  }
+
 
   /**
    * Count Type UserCountOutputType
@@ -1811,6 +1911,46 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountInvoicesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: InvoiceWhereInput
+  }
+
+
+  /**
+   * Count Type PrinterCountOutputType
+   */
+
+  export type PrinterCountOutputType = {
+    receiptUsers: number
+    kotUsers: number
+  }
+
+  export type PrinterCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    receiptUsers?: boolean | PrinterCountOutputTypeCountReceiptUsersArgs
+    kotUsers?: boolean | PrinterCountOutputTypeCountKotUsersArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * PrinterCountOutputType without action
+   */
+  export type PrinterCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PrinterCountOutputType
+     */
+    select?: PrinterCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * PrinterCountOutputType without action
+   */
+  export type PrinterCountOutputTypeCountReceiptUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWhereInput
+  }
+
+  /**
+   * PrinterCountOutputType without action
+   */
+  export type PrinterCountOutputTypeCountKotUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWhereInput
   }
 
 
@@ -3423,6 +3563,7 @@ export namespace Prisma {
     products?: boolean | Branch$productsArgs<ExtArgs>
     invoices?: boolean | Branch$invoicesArgs<ExtArgs>
     kots?: boolean | Branch$kotsArgs<ExtArgs>
+    printers?: boolean | Branch$printersArgs<ExtArgs>
     _count?: boolean | BranchCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branch"]>
 
@@ -3492,6 +3633,7 @@ export namespace Prisma {
     products?: boolean | Branch$productsArgs<ExtArgs>
     invoices?: boolean | Branch$invoicesArgs<ExtArgs>
     kots?: boolean | Branch$kotsArgs<ExtArgs>
+    printers?: boolean | Branch$printersArgs<ExtArgs>
     _count?: boolean | BranchCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BranchIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3509,6 +3651,7 @@ export namespace Prisma {
       products: Prisma.$ProductPayload<ExtArgs>[]
       invoices: Prisma.$InvoicePayload<ExtArgs>[]
       kots: Prisma.$KOTPayload<ExtArgs>[]
+      printers: Prisma.$PrinterPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3926,6 +4069,7 @@ export namespace Prisma {
     products<T extends Branch$productsArgs<ExtArgs> = {}>(args?: Subset<T, Branch$productsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     invoices<T extends Branch$invoicesArgs<ExtArgs> = {}>(args?: Subset<T, Branch$invoicesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     kots<T extends Branch$kotsArgs<ExtArgs> = {}>(args?: Subset<T, Branch$kotsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$KOTPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    printers<T extends Branch$printersArgs<ExtArgs> = {}>(args?: Subset<T, Branch$printersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PrinterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4482,6 +4626,30 @@ export namespace Prisma {
   }
 
   /**
+   * Branch.printers
+   */
+  export type Branch$printersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Printer
+     */
+    select?: PrinterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Printer
+     */
+    omit?: PrinterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrinterInclude<ExtArgs> | null
+    where?: PrinterWhereInput
+    orderBy?: PrinterOrderByWithRelationInput | PrinterOrderByWithRelationInput[]
+    cursor?: PrinterWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PrinterScalarFieldEnum | PrinterScalarFieldEnum[]
+  }
+
+  /**
    * Branch without action
    */
   export type BranchDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4521,6 +4689,8 @@ export namespace Prisma {
     isActive: boolean | null
     department: string | null
     designation: string | null
+    receiptPrinterId: string | null
+    kotPrinterId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -4536,6 +4706,8 @@ export namespace Prisma {
     isActive: boolean | null
     department: string | null
     designation: string | null
+    receiptPrinterId: string | null
+    kotPrinterId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -4551,6 +4723,8 @@ export namespace Prisma {
     isActive: number
     department: number
     designation: number
+    receiptPrinterId: number
+    kotPrinterId: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -4568,6 +4742,8 @@ export namespace Prisma {
     isActive?: true
     department?: true
     designation?: true
+    receiptPrinterId?: true
+    kotPrinterId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -4583,6 +4759,8 @@ export namespace Prisma {
     isActive?: true
     department?: true
     designation?: true
+    receiptPrinterId?: true
+    kotPrinterId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -4598,6 +4776,8 @@ export namespace Prisma {
     isActive?: true
     department?: true
     designation?: true
+    receiptPrinterId?: true
+    kotPrinterId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -4686,6 +4866,8 @@ export namespace Prisma {
     isActive: boolean
     department: string | null
     designation: string | null
+    receiptPrinterId: string | null
+    kotPrinterId: string | null
     createdAt: Date
     updatedAt: Date
     _count: UserCountAggregateOutputType | null
@@ -4718,9 +4900,13 @@ export namespace Prisma {
     isActive?: boolean
     department?: boolean
     designation?: boolean
+    receiptPrinterId?: boolean
+    kotPrinterId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     branch?: boolean | User$branchArgs<ExtArgs>
+    receiptPrinter?: boolean | User$receiptPrinterArgs<ExtArgs>
+    kotPrinter?: boolean | User$kotPrinterArgs<ExtArgs>
     invoices?: boolean | User$invoicesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -4736,9 +4922,13 @@ export namespace Prisma {
     isActive?: boolean
     department?: boolean
     designation?: boolean
+    receiptPrinterId?: boolean
+    kotPrinterId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     branch?: boolean | User$branchArgs<ExtArgs>
+    receiptPrinter?: boolean | User$receiptPrinterArgs<ExtArgs>
+    kotPrinter?: boolean | User$kotPrinterArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4752,9 +4942,13 @@ export namespace Prisma {
     isActive?: boolean
     department?: boolean
     designation?: boolean
+    receiptPrinterId?: boolean
+    kotPrinterId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     branch?: boolean | User$branchArgs<ExtArgs>
+    receiptPrinter?: boolean | User$receiptPrinterArgs<ExtArgs>
+    kotPrinter?: boolean | User$kotPrinterArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -4768,27 +4962,37 @@ export namespace Prisma {
     isActive?: boolean
     department?: boolean
     designation?: boolean
+    receiptPrinterId?: boolean
+    kotPrinterId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "passwordHash" | "role" | "branchId" | "phone" | "isActive" | "department" | "designation" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "passwordHash" | "role" | "branchId" | "phone" | "isActive" | "department" | "designation" | "receiptPrinterId" | "kotPrinterId" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | User$branchArgs<ExtArgs>
+    receiptPrinter?: boolean | User$receiptPrinterArgs<ExtArgs>
+    kotPrinter?: boolean | User$kotPrinterArgs<ExtArgs>
     invoices?: boolean | User$invoicesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | User$branchArgs<ExtArgs>
+    receiptPrinter?: boolean | User$receiptPrinterArgs<ExtArgs>
+    kotPrinter?: boolean | User$kotPrinterArgs<ExtArgs>
   }
   export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | User$branchArgs<ExtArgs>
+    receiptPrinter?: boolean | User$receiptPrinterArgs<ExtArgs>
+    kotPrinter?: boolean | User$kotPrinterArgs<ExtArgs>
   }
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
       branch: Prisma.$BranchPayload<ExtArgs> | null
+      receiptPrinter: Prisma.$PrinterPayload<ExtArgs> | null
+      kotPrinter: Prisma.$PrinterPayload<ExtArgs> | null
       invoices: Prisma.$InvoicePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -4802,6 +5006,8 @@ export namespace Prisma {
       isActive: boolean
       department: string | null
       designation: string | null
+      receiptPrinterId: string | null
+      kotPrinterId: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["user"]>
@@ -5199,6 +5405,8 @@ export namespace Prisma {
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     branch<T extends User$branchArgs<ExtArgs> = {}>(args?: Subset<T, User$branchArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    receiptPrinter<T extends User$receiptPrinterArgs<ExtArgs> = {}>(args?: Subset<T, User$receiptPrinterArgs<ExtArgs>>): Prisma__PrinterClient<$Result.GetResult<Prisma.$PrinterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    kotPrinter<T extends User$kotPrinterArgs<ExtArgs> = {}>(args?: Subset<T, User$kotPrinterArgs<ExtArgs>>): Prisma__PrinterClient<$Result.GetResult<Prisma.$PrinterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     invoices<T extends User$invoicesArgs<ExtArgs> = {}>(args?: Subset<T, User$invoicesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -5239,6 +5447,8 @@ export namespace Prisma {
     readonly isActive: FieldRef<"User", 'Boolean'>
     readonly department: FieldRef<"User", 'String'>
     readonly designation: FieldRef<"User", 'String'>
+    readonly receiptPrinterId: FieldRef<"User", 'String'>
+    readonly kotPrinterId: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
   }
@@ -5656,6 +5866,44 @@ export namespace Prisma {
   }
 
   /**
+   * User.receiptPrinter
+   */
+  export type User$receiptPrinterArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Printer
+     */
+    select?: PrinterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Printer
+     */
+    omit?: PrinterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrinterInclude<ExtArgs> | null
+    where?: PrinterWhereInput
+  }
+
+  /**
+   * User.kotPrinter
+   */
+  export type User$kotPrinterArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Printer
+     */
+    select?: PrinterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Printer
+     */
+    omit?: PrinterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrinterInclude<ExtArgs> | null
+    where?: PrinterWhereInput
+  }
+
+  /**
    * User.invoices
    */
   export type User$invoicesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5695,6 +5943,1161 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Printer
+   */
+
+  export type AggregatePrinter = {
+    _count: PrinterCountAggregateOutputType | null
+    _min: PrinterMinAggregateOutputType | null
+    _max: PrinterMaxAggregateOutputType | null
+  }
+
+  export type PrinterMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    printerName: string | null
+    type: string | null
+    isDefault: boolean | null
+    branchId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PrinterMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    printerName: string | null
+    type: string | null
+    isDefault: boolean | null
+    branchId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PrinterCountAggregateOutputType = {
+    id: number
+    name: number
+    printerName: number
+    type: number
+    isDefault: number
+    branchId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PrinterMinAggregateInputType = {
+    id?: true
+    name?: true
+    printerName?: true
+    type?: true
+    isDefault?: true
+    branchId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PrinterMaxAggregateInputType = {
+    id?: true
+    name?: true
+    printerName?: true
+    type?: true
+    isDefault?: true
+    branchId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PrinterCountAggregateInputType = {
+    id?: true
+    name?: true
+    printerName?: true
+    type?: true
+    isDefault?: true
+    branchId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PrinterAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Printer to aggregate.
+     */
+    where?: PrinterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Printers to fetch.
+     */
+    orderBy?: PrinterOrderByWithRelationInput | PrinterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PrinterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Printers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Printers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Printers
+    **/
+    _count?: true | PrinterCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PrinterMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PrinterMaxAggregateInputType
+  }
+
+  export type GetPrinterAggregateType<T extends PrinterAggregateArgs> = {
+        [P in keyof T & keyof AggregatePrinter]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePrinter[P]>
+      : GetScalarType<T[P], AggregatePrinter[P]>
+  }
+
+
+
+
+  export type PrinterGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PrinterWhereInput
+    orderBy?: PrinterOrderByWithAggregationInput | PrinterOrderByWithAggregationInput[]
+    by: PrinterScalarFieldEnum[] | PrinterScalarFieldEnum
+    having?: PrinterScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PrinterCountAggregateInputType | true
+    _min?: PrinterMinAggregateInputType
+    _max?: PrinterMaxAggregateInputType
+  }
+
+  export type PrinterGroupByOutputType = {
+    id: string
+    name: string
+    printerName: string
+    type: string
+    isDefault: boolean
+    branchId: string
+    createdAt: Date
+    updatedAt: Date
+    _count: PrinterCountAggregateOutputType | null
+    _min: PrinterMinAggregateOutputType | null
+    _max: PrinterMaxAggregateOutputType | null
+  }
+
+  type GetPrinterGroupByPayload<T extends PrinterGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PrinterGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PrinterGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PrinterGroupByOutputType[P]>
+            : GetScalarType<T[P], PrinterGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PrinterSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    printerName?: boolean
+    type?: boolean
+    isDefault?: boolean
+    branchId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    receiptUsers?: boolean | Printer$receiptUsersArgs<ExtArgs>
+    kotUsers?: boolean | Printer$kotUsersArgs<ExtArgs>
+    _count?: boolean | PrinterCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["printer"]>
+
+  export type PrinterSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    printerName?: boolean
+    type?: boolean
+    isDefault?: boolean
+    branchId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["printer"]>
+
+  export type PrinterSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    printerName?: boolean
+    type?: boolean
+    isDefault?: boolean
+    branchId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["printer"]>
+
+  export type PrinterSelectScalar = {
+    id?: boolean
+    name?: boolean
+    printerName?: boolean
+    type?: boolean
+    isDefault?: boolean
+    branchId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PrinterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "printerName" | "type" | "isDefault" | "branchId" | "createdAt" | "updatedAt", ExtArgs["result"]["printer"]>
+  export type PrinterInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    receiptUsers?: boolean | Printer$receiptUsersArgs<ExtArgs>
+    kotUsers?: boolean | Printer$kotUsersArgs<ExtArgs>
+    _count?: boolean | PrinterCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type PrinterIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+  }
+  export type PrinterIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+  }
+
+  export type $PrinterPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Printer"
+    objects: {
+      branch: Prisma.$BranchPayload<ExtArgs>
+      receiptUsers: Prisma.$UserPayload<ExtArgs>[]
+      kotUsers: Prisma.$UserPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      printerName: string
+      type: string
+      isDefault: boolean
+      branchId: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["printer"]>
+    composites: {}
+  }
+
+  type PrinterGetPayload<S extends boolean | null | undefined | PrinterDefaultArgs> = $Result.GetResult<Prisma.$PrinterPayload, S>
+
+  type PrinterCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PrinterFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PrinterCountAggregateInputType | true
+    }
+
+  export interface PrinterDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Printer'], meta: { name: 'Printer' } }
+    /**
+     * Find zero or one Printer that matches the filter.
+     * @param {PrinterFindUniqueArgs} args - Arguments to find a Printer
+     * @example
+     * // Get one Printer
+     * const printer = await prisma.printer.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PrinterFindUniqueArgs>(args: SelectSubset<T, PrinterFindUniqueArgs<ExtArgs>>): Prisma__PrinterClient<$Result.GetResult<Prisma.$PrinterPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Printer that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PrinterFindUniqueOrThrowArgs} args - Arguments to find a Printer
+     * @example
+     * // Get one Printer
+     * const printer = await prisma.printer.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PrinterFindUniqueOrThrowArgs>(args: SelectSubset<T, PrinterFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PrinterClient<$Result.GetResult<Prisma.$PrinterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Printer that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PrinterFindFirstArgs} args - Arguments to find a Printer
+     * @example
+     * // Get one Printer
+     * const printer = await prisma.printer.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PrinterFindFirstArgs>(args?: SelectSubset<T, PrinterFindFirstArgs<ExtArgs>>): Prisma__PrinterClient<$Result.GetResult<Prisma.$PrinterPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Printer that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PrinterFindFirstOrThrowArgs} args - Arguments to find a Printer
+     * @example
+     * // Get one Printer
+     * const printer = await prisma.printer.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PrinterFindFirstOrThrowArgs>(args?: SelectSubset<T, PrinterFindFirstOrThrowArgs<ExtArgs>>): Prisma__PrinterClient<$Result.GetResult<Prisma.$PrinterPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Printers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PrinterFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Printers
+     * const printers = await prisma.printer.findMany()
+     * 
+     * // Get first 10 Printers
+     * const printers = await prisma.printer.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const printerWithIdOnly = await prisma.printer.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PrinterFindManyArgs>(args?: SelectSubset<T, PrinterFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PrinterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Printer.
+     * @param {PrinterCreateArgs} args - Arguments to create a Printer.
+     * @example
+     * // Create one Printer
+     * const Printer = await prisma.printer.create({
+     *   data: {
+     *     // ... data to create a Printer
+     *   }
+     * })
+     * 
+     */
+    create<T extends PrinterCreateArgs>(args: SelectSubset<T, PrinterCreateArgs<ExtArgs>>): Prisma__PrinterClient<$Result.GetResult<Prisma.$PrinterPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Printers.
+     * @param {PrinterCreateManyArgs} args - Arguments to create many Printers.
+     * @example
+     * // Create many Printers
+     * const printer = await prisma.printer.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PrinterCreateManyArgs>(args?: SelectSubset<T, PrinterCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Printers and returns the data saved in the database.
+     * @param {PrinterCreateManyAndReturnArgs} args - Arguments to create many Printers.
+     * @example
+     * // Create many Printers
+     * const printer = await prisma.printer.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Printers and only return the `id`
+     * const printerWithIdOnly = await prisma.printer.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PrinterCreateManyAndReturnArgs>(args?: SelectSubset<T, PrinterCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PrinterPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Printer.
+     * @param {PrinterDeleteArgs} args - Arguments to delete one Printer.
+     * @example
+     * // Delete one Printer
+     * const Printer = await prisma.printer.delete({
+     *   where: {
+     *     // ... filter to delete one Printer
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PrinterDeleteArgs>(args: SelectSubset<T, PrinterDeleteArgs<ExtArgs>>): Prisma__PrinterClient<$Result.GetResult<Prisma.$PrinterPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Printer.
+     * @param {PrinterUpdateArgs} args - Arguments to update one Printer.
+     * @example
+     * // Update one Printer
+     * const printer = await prisma.printer.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PrinterUpdateArgs>(args: SelectSubset<T, PrinterUpdateArgs<ExtArgs>>): Prisma__PrinterClient<$Result.GetResult<Prisma.$PrinterPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Printers.
+     * @param {PrinterDeleteManyArgs} args - Arguments to filter Printers to delete.
+     * @example
+     * // Delete a few Printers
+     * const { count } = await prisma.printer.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PrinterDeleteManyArgs>(args?: SelectSubset<T, PrinterDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Printers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PrinterUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Printers
+     * const printer = await prisma.printer.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PrinterUpdateManyArgs>(args: SelectSubset<T, PrinterUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Printers and returns the data updated in the database.
+     * @param {PrinterUpdateManyAndReturnArgs} args - Arguments to update many Printers.
+     * @example
+     * // Update many Printers
+     * const printer = await prisma.printer.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Printers and only return the `id`
+     * const printerWithIdOnly = await prisma.printer.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PrinterUpdateManyAndReturnArgs>(args: SelectSubset<T, PrinterUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PrinterPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Printer.
+     * @param {PrinterUpsertArgs} args - Arguments to update or create a Printer.
+     * @example
+     * // Update or create a Printer
+     * const printer = await prisma.printer.upsert({
+     *   create: {
+     *     // ... data to create a Printer
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Printer we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PrinterUpsertArgs>(args: SelectSubset<T, PrinterUpsertArgs<ExtArgs>>): Prisma__PrinterClient<$Result.GetResult<Prisma.$PrinterPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Printers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PrinterCountArgs} args - Arguments to filter Printers to count.
+     * @example
+     * // Count the number of Printers
+     * const count = await prisma.printer.count({
+     *   where: {
+     *     // ... the filter for the Printers we want to count
+     *   }
+     * })
+    **/
+    count<T extends PrinterCountArgs>(
+      args?: Subset<T, PrinterCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PrinterCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Printer.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PrinterAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PrinterAggregateArgs>(args: Subset<T, PrinterAggregateArgs>): Prisma.PrismaPromise<GetPrinterAggregateType<T>>
+
+    /**
+     * Group by Printer.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PrinterGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PrinterGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PrinterGroupByArgs['orderBy'] }
+        : { orderBy?: PrinterGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PrinterGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPrinterGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Printer model
+   */
+  readonly fields: PrinterFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Printer.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PrinterClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    branch<T extends BranchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchDefaultArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    receiptUsers<T extends Printer$receiptUsersArgs<ExtArgs> = {}>(args?: Subset<T, Printer$receiptUsersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    kotUsers<T extends Printer$kotUsersArgs<ExtArgs> = {}>(args?: Subset<T, Printer$kotUsersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Printer model
+   */
+  interface PrinterFieldRefs {
+    readonly id: FieldRef<"Printer", 'String'>
+    readonly name: FieldRef<"Printer", 'String'>
+    readonly printerName: FieldRef<"Printer", 'String'>
+    readonly type: FieldRef<"Printer", 'String'>
+    readonly isDefault: FieldRef<"Printer", 'Boolean'>
+    readonly branchId: FieldRef<"Printer", 'String'>
+    readonly createdAt: FieldRef<"Printer", 'DateTime'>
+    readonly updatedAt: FieldRef<"Printer", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Printer findUnique
+   */
+  export type PrinterFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Printer
+     */
+    select?: PrinterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Printer
+     */
+    omit?: PrinterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrinterInclude<ExtArgs> | null
+    /**
+     * Filter, which Printer to fetch.
+     */
+    where: PrinterWhereUniqueInput
+  }
+
+  /**
+   * Printer findUniqueOrThrow
+   */
+  export type PrinterFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Printer
+     */
+    select?: PrinterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Printer
+     */
+    omit?: PrinterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrinterInclude<ExtArgs> | null
+    /**
+     * Filter, which Printer to fetch.
+     */
+    where: PrinterWhereUniqueInput
+  }
+
+  /**
+   * Printer findFirst
+   */
+  export type PrinterFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Printer
+     */
+    select?: PrinterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Printer
+     */
+    omit?: PrinterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrinterInclude<ExtArgs> | null
+    /**
+     * Filter, which Printer to fetch.
+     */
+    where?: PrinterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Printers to fetch.
+     */
+    orderBy?: PrinterOrderByWithRelationInput | PrinterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Printers.
+     */
+    cursor?: PrinterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Printers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Printers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Printers.
+     */
+    distinct?: PrinterScalarFieldEnum | PrinterScalarFieldEnum[]
+  }
+
+  /**
+   * Printer findFirstOrThrow
+   */
+  export type PrinterFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Printer
+     */
+    select?: PrinterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Printer
+     */
+    omit?: PrinterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrinterInclude<ExtArgs> | null
+    /**
+     * Filter, which Printer to fetch.
+     */
+    where?: PrinterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Printers to fetch.
+     */
+    orderBy?: PrinterOrderByWithRelationInput | PrinterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Printers.
+     */
+    cursor?: PrinterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Printers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Printers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Printers.
+     */
+    distinct?: PrinterScalarFieldEnum | PrinterScalarFieldEnum[]
+  }
+
+  /**
+   * Printer findMany
+   */
+  export type PrinterFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Printer
+     */
+    select?: PrinterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Printer
+     */
+    omit?: PrinterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrinterInclude<ExtArgs> | null
+    /**
+     * Filter, which Printers to fetch.
+     */
+    where?: PrinterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Printers to fetch.
+     */
+    orderBy?: PrinterOrderByWithRelationInput | PrinterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Printers.
+     */
+    cursor?: PrinterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Printers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Printers.
+     */
+    skip?: number
+    distinct?: PrinterScalarFieldEnum | PrinterScalarFieldEnum[]
+  }
+
+  /**
+   * Printer create
+   */
+  export type PrinterCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Printer
+     */
+    select?: PrinterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Printer
+     */
+    omit?: PrinterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrinterInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Printer.
+     */
+    data: XOR<PrinterCreateInput, PrinterUncheckedCreateInput>
+  }
+
+  /**
+   * Printer createMany
+   */
+  export type PrinterCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Printers.
+     */
+    data: PrinterCreateManyInput | PrinterCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Printer createManyAndReturn
+   */
+  export type PrinterCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Printer
+     */
+    select?: PrinterSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Printer
+     */
+    omit?: PrinterOmit<ExtArgs> | null
+    /**
+     * The data used to create many Printers.
+     */
+    data: PrinterCreateManyInput | PrinterCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrinterIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Printer update
+   */
+  export type PrinterUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Printer
+     */
+    select?: PrinterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Printer
+     */
+    omit?: PrinterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrinterInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Printer.
+     */
+    data: XOR<PrinterUpdateInput, PrinterUncheckedUpdateInput>
+    /**
+     * Choose, which Printer to update.
+     */
+    where: PrinterWhereUniqueInput
+  }
+
+  /**
+   * Printer updateMany
+   */
+  export type PrinterUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Printers.
+     */
+    data: XOR<PrinterUpdateManyMutationInput, PrinterUncheckedUpdateManyInput>
+    /**
+     * Filter which Printers to update
+     */
+    where?: PrinterWhereInput
+    /**
+     * Limit how many Printers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Printer updateManyAndReturn
+   */
+  export type PrinterUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Printer
+     */
+    select?: PrinterSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Printer
+     */
+    omit?: PrinterOmit<ExtArgs> | null
+    /**
+     * The data used to update Printers.
+     */
+    data: XOR<PrinterUpdateManyMutationInput, PrinterUncheckedUpdateManyInput>
+    /**
+     * Filter which Printers to update
+     */
+    where?: PrinterWhereInput
+    /**
+     * Limit how many Printers to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrinterIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Printer upsert
+   */
+  export type PrinterUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Printer
+     */
+    select?: PrinterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Printer
+     */
+    omit?: PrinterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrinterInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Printer to update in case it exists.
+     */
+    where: PrinterWhereUniqueInput
+    /**
+     * In case the Printer found by the `where` argument doesn't exist, create a new Printer with this data.
+     */
+    create: XOR<PrinterCreateInput, PrinterUncheckedCreateInput>
+    /**
+     * In case the Printer was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PrinterUpdateInput, PrinterUncheckedUpdateInput>
+  }
+
+  /**
+   * Printer delete
+   */
+  export type PrinterDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Printer
+     */
+    select?: PrinterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Printer
+     */
+    omit?: PrinterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrinterInclude<ExtArgs> | null
+    /**
+     * Filter which Printer to delete.
+     */
+    where: PrinterWhereUniqueInput
+  }
+
+  /**
+   * Printer deleteMany
+   */
+  export type PrinterDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Printers to delete
+     */
+    where?: PrinterWhereInput
+    /**
+     * Limit how many Printers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Printer.receiptUsers
+   */
+  export type Printer$receiptUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    cursor?: UserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
+  }
+
+  /**
+   * Printer.kotUsers
+   */
+  export type Printer$kotUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    cursor?: UserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
+  }
+
+  /**
+   * Printer without action
+   */
+  export type PrinterDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Printer
+     */
+    select?: PrinterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Printer
+     */
+    omit?: PrinterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrinterInclude<ExtArgs> | null
   }
 
 
@@ -13784,11 +15187,27 @@ export namespace Prisma {
     isActive: 'isActive',
     department: 'department',
     designation: 'designation',
+    receiptPrinterId: 'receiptPrinterId',
+    kotPrinterId: 'kotPrinterId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+  export const PrinterScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    printerName: 'printerName',
+    type: 'type',
+    isDefault: 'isDefault',
+    branchId: 'branchId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PrinterScalarFieldEnum = (typeof PrinterScalarFieldEnum)[keyof typeof PrinterScalarFieldEnum]
 
 
   export const CategoryScalarFieldEnum: {
@@ -14153,6 +15572,7 @@ export namespace Prisma {
     products?: ProductListRelationFilter
     invoices?: InvoiceListRelationFilter
     kots?: KOTListRelationFilter
+    printers?: PrinterListRelationFilter
   }
 
   export type BranchOrderByWithRelationInput = {
@@ -14177,6 +15597,7 @@ export namespace Prisma {
     products?: ProductOrderByRelationAggregateInput
     invoices?: InvoiceOrderByRelationAggregateInput
     kots?: KOTOrderByRelationAggregateInput
+    printers?: PrinterOrderByRelationAggregateInput
   }
 
   export type BranchWhereUniqueInput = Prisma.AtLeast<{
@@ -14204,6 +15625,7 @@ export namespace Prisma {
     products?: ProductListRelationFilter
     invoices?: InvoiceListRelationFilter
     kots?: KOTListRelationFilter
+    printers?: PrinterListRelationFilter
   }, "id">
 
   export type BranchOrderByWithAggregationInput = {
@@ -14266,9 +15688,13 @@ export namespace Prisma {
     isActive?: BoolFilter<"User"> | boolean
     department?: StringNullableFilter<"User"> | string | null
     designation?: StringNullableFilter<"User"> | string | null
+    receiptPrinterId?: StringNullableFilter<"User"> | string | null
+    kotPrinterId?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     branch?: XOR<BranchNullableScalarRelationFilter, BranchWhereInput> | null
+    receiptPrinter?: XOR<PrinterNullableScalarRelationFilter, PrinterWhereInput> | null
+    kotPrinter?: XOR<PrinterNullableScalarRelationFilter, PrinterWhereInput> | null
     invoices?: InvoiceListRelationFilter
   }
 
@@ -14283,9 +15709,13 @@ export namespace Prisma {
     isActive?: SortOrder
     department?: SortOrderInput | SortOrder
     designation?: SortOrderInput | SortOrder
+    receiptPrinterId?: SortOrderInput | SortOrder
+    kotPrinterId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     branch?: BranchOrderByWithRelationInput
+    receiptPrinter?: PrinterOrderByWithRelationInput
+    kotPrinter?: PrinterOrderByWithRelationInput
     invoices?: InvoiceOrderByRelationAggregateInput
   }
 
@@ -14303,9 +15733,13 @@ export namespace Prisma {
     isActive?: BoolFilter<"User"> | boolean
     department?: StringNullableFilter<"User"> | string | null
     designation?: StringNullableFilter<"User"> | string | null
+    receiptPrinterId?: StringNullableFilter<"User"> | string | null
+    kotPrinterId?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     branch?: XOR<BranchNullableScalarRelationFilter, BranchWhereInput> | null
+    receiptPrinter?: XOR<PrinterNullableScalarRelationFilter, PrinterWhereInput> | null
+    kotPrinter?: XOR<PrinterNullableScalarRelationFilter, PrinterWhereInput> | null
     invoices?: InvoiceListRelationFilter
   }, "id" | "email">
 
@@ -14320,6 +15754,8 @@ export namespace Prisma {
     isActive?: SortOrder
     department?: SortOrderInput | SortOrder
     designation?: SortOrderInput | SortOrder
+    receiptPrinterId?: SortOrderInput | SortOrder
+    kotPrinterId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
@@ -14341,8 +15777,86 @@ export namespace Prisma {
     isActive?: BoolWithAggregatesFilter<"User"> | boolean
     department?: StringNullableWithAggregatesFilter<"User"> | string | null
     designation?: StringNullableWithAggregatesFilter<"User"> | string | null
+    receiptPrinterId?: StringNullableWithAggregatesFilter<"User"> | string | null
+    kotPrinterId?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+  }
+
+  export type PrinterWhereInput = {
+    AND?: PrinterWhereInput | PrinterWhereInput[]
+    OR?: PrinterWhereInput[]
+    NOT?: PrinterWhereInput | PrinterWhereInput[]
+    id?: StringFilter<"Printer"> | string
+    name?: StringFilter<"Printer"> | string
+    printerName?: StringFilter<"Printer"> | string
+    type?: StringFilter<"Printer"> | string
+    isDefault?: BoolFilter<"Printer"> | boolean
+    branchId?: StringFilter<"Printer"> | string
+    createdAt?: DateTimeFilter<"Printer"> | Date | string
+    updatedAt?: DateTimeFilter<"Printer"> | Date | string
+    branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
+    receiptUsers?: UserListRelationFilter
+    kotUsers?: UserListRelationFilter
+  }
+
+  export type PrinterOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    printerName?: SortOrder
+    type?: SortOrder
+    isDefault?: SortOrder
+    branchId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    branch?: BranchOrderByWithRelationInput
+    receiptUsers?: UserOrderByRelationAggregateInput
+    kotUsers?: UserOrderByRelationAggregateInput
+  }
+
+  export type PrinterWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: PrinterWhereInput | PrinterWhereInput[]
+    OR?: PrinterWhereInput[]
+    NOT?: PrinterWhereInput | PrinterWhereInput[]
+    name?: StringFilter<"Printer"> | string
+    printerName?: StringFilter<"Printer"> | string
+    type?: StringFilter<"Printer"> | string
+    isDefault?: BoolFilter<"Printer"> | boolean
+    branchId?: StringFilter<"Printer"> | string
+    createdAt?: DateTimeFilter<"Printer"> | Date | string
+    updatedAt?: DateTimeFilter<"Printer"> | Date | string
+    branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
+    receiptUsers?: UserListRelationFilter
+    kotUsers?: UserListRelationFilter
+  }, "id">
+
+  export type PrinterOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    printerName?: SortOrder
+    type?: SortOrder
+    isDefault?: SortOrder
+    branchId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PrinterCountOrderByAggregateInput
+    _max?: PrinterMaxOrderByAggregateInput
+    _min?: PrinterMinOrderByAggregateInput
+  }
+
+  export type PrinterScalarWhereWithAggregatesInput = {
+    AND?: PrinterScalarWhereWithAggregatesInput | PrinterScalarWhereWithAggregatesInput[]
+    OR?: PrinterScalarWhereWithAggregatesInput[]
+    NOT?: PrinterScalarWhereWithAggregatesInput | PrinterScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Printer"> | string
+    name?: StringWithAggregatesFilter<"Printer"> | string
+    printerName?: StringWithAggregatesFilter<"Printer"> | string
+    type?: StringWithAggregatesFilter<"Printer"> | string
+    isDefault?: BoolWithAggregatesFilter<"Printer"> | boolean
+    branchId?: StringWithAggregatesFilter<"Printer"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Printer"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Printer"> | Date | string
   }
 
   export type CategoryWhereInput = {
@@ -15076,6 +16590,7 @@ export namespace Prisma {
     products?: ProductCreateNestedManyWithoutBranchInput
     invoices?: InvoiceCreateNestedManyWithoutBranchInput
     kots?: KOTCreateNestedManyWithoutBranchInput
+    printers?: PrinterCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateInput = {
@@ -15099,6 +16614,7 @@ export namespace Prisma {
     products?: ProductUncheckedCreateNestedManyWithoutBranchInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutBranchInput
     kots?: KOTUncheckedCreateNestedManyWithoutBranchInput
+    printers?: PrinterUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUpdateInput = {
@@ -15122,6 +16638,7 @@ export namespace Prisma {
     products?: ProductUpdateManyWithoutBranchNestedInput
     invoices?: InvoiceUpdateManyWithoutBranchNestedInput
     kots?: KOTUpdateManyWithoutBranchNestedInput
+    printers?: PrinterUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateInput = {
@@ -15145,6 +16662,7 @@ export namespace Prisma {
     products?: ProductUncheckedUpdateManyWithoutBranchNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutBranchNestedInput
     kots?: KOTUncheckedUpdateManyWithoutBranchNestedInput
+    printers?: PrinterUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCreateManyInput = {
@@ -15216,6 +16734,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     branch?: BranchCreateNestedOneWithoutUsersInput
+    receiptPrinter?: PrinterCreateNestedOneWithoutReceiptUsersInput
+    kotPrinter?: PrinterCreateNestedOneWithoutKotUsersInput
     invoices?: InvoiceCreateNestedManyWithoutBilledByInput
   }
 
@@ -15230,6 +16750,8 @@ export namespace Prisma {
     isActive?: boolean
     department?: string | null
     designation?: string | null
+    receiptPrinterId?: string | null
+    kotPrinterId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     invoices?: InvoiceUncheckedCreateNestedManyWithoutBilledByInput
@@ -15248,6 +16770,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branch?: BranchUpdateOneWithoutUsersNestedInput
+    receiptPrinter?: PrinterUpdateOneWithoutReceiptUsersNestedInput
+    kotPrinter?: PrinterUpdateOneWithoutKotUsersNestedInput
     invoices?: InvoiceUpdateManyWithoutBilledByNestedInput
   }
 
@@ -15262,6 +16786,8 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     department?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    receiptPrinterId?: NullableStringFieldUpdateOperationsInput | string | null
+    kotPrinterId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     invoices?: InvoiceUncheckedUpdateManyWithoutBilledByNestedInput
@@ -15278,6 +16804,8 @@ export namespace Prisma {
     isActive?: boolean
     department?: string | null
     designation?: string | null
+    receiptPrinterId?: string | null
+    kotPrinterId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -15307,6 +16835,92 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     department?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    receiptPrinterId?: NullableStringFieldUpdateOperationsInput | string | null
+    kotPrinterId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PrinterCreateInput = {
+    id?: string
+    name: string
+    printerName: string
+    type?: string
+    isDefault?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutPrintersInput
+    receiptUsers?: UserCreateNestedManyWithoutReceiptPrinterInput
+    kotUsers?: UserCreateNestedManyWithoutKotPrinterInput
+  }
+
+  export type PrinterUncheckedCreateInput = {
+    id?: string
+    name: string
+    printerName: string
+    type?: string
+    isDefault?: boolean
+    branchId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    receiptUsers?: UserUncheckedCreateNestedManyWithoutReceiptPrinterInput
+    kotUsers?: UserUncheckedCreateNestedManyWithoutKotPrinterInput
+  }
+
+  export type PrinterUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    printerName?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutPrintersNestedInput
+    receiptUsers?: UserUpdateManyWithoutReceiptPrinterNestedInput
+    kotUsers?: UserUpdateManyWithoutKotPrinterNestedInput
+  }
+
+  export type PrinterUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    printerName?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    branchId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    receiptUsers?: UserUncheckedUpdateManyWithoutReceiptPrinterNestedInput
+    kotUsers?: UserUncheckedUpdateManyWithoutKotPrinterNestedInput
+  }
+
+  export type PrinterCreateManyInput = {
+    id?: string
+    name: string
+    printerName: string
+    type?: string
+    isDefault?: boolean
+    branchId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PrinterUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    printerName?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PrinterUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    printerName?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    branchId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -16139,6 +17753,12 @@ export namespace Prisma {
     none?: KOTWhereInput
   }
 
+  export type PrinterListRelationFilter = {
+    every?: PrinterWhereInput
+    some?: PrinterWhereInput
+    none?: PrinterWhereInput
+  }
+
   export type UserOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -16152,6 +17772,10 @@ export namespace Prisma {
   }
 
   export type KOTOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PrinterOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -16258,6 +17882,11 @@ export namespace Prisma {
     isNot?: BranchWhereInput | null
   }
 
+  export type PrinterNullableScalarRelationFilter = {
+    is?: PrinterWhereInput | null
+    isNot?: PrinterWhereInput | null
+  }
+
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -16269,6 +17898,8 @@ export namespace Prisma {
     isActive?: SortOrder
     department?: SortOrder
     designation?: SortOrder
+    receiptPrinterId?: SortOrder
+    kotPrinterId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -16284,6 +17915,8 @@ export namespace Prisma {
     isActive?: SortOrder
     department?: SortOrder
     designation?: SortOrder
+    receiptPrinterId?: SortOrder
+    kotPrinterId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -16299,6 +17932,8 @@ export namespace Prisma {
     isActive?: SortOrder
     department?: SortOrder
     designation?: SortOrder
+    receiptPrinterId?: SortOrder
+    kotPrinterId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -16311,6 +17946,44 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumRoleFilter<$PrismaModel>
     _max?: NestedEnumRoleFilter<$PrismaModel>
+  }
+
+  export type BranchScalarRelationFilter = {
+    is?: BranchWhereInput
+    isNot?: BranchWhereInput
+  }
+
+  export type PrinterCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    printerName?: SortOrder
+    type?: SortOrder
+    isDefault?: SortOrder
+    branchId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PrinterMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    printerName?: SortOrder
+    type?: SortOrder
+    isDefault?: SortOrder
+    branchId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PrinterMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    printerName?: SortOrder
+    type?: SortOrder
+    isDefault?: SortOrder
+    branchId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type CategoryCountOrderByAggregateInput = {
@@ -16447,11 +18120,6 @@ export namespace Prisma {
 
   export type ProductSumOrderByAggregateInput = {
     price?: SortOrder
-  }
-
-  export type BranchScalarRelationFilter = {
-    is?: BranchWhereInput
-    isNot?: BranchWhereInput
   }
 
   export type UserScalarRelationFilter = {
@@ -16784,6 +18452,13 @@ export namespace Prisma {
     connect?: KOTWhereUniqueInput | KOTWhereUniqueInput[]
   }
 
+  export type PrinterCreateNestedManyWithoutBranchInput = {
+    create?: XOR<PrinterCreateWithoutBranchInput, PrinterUncheckedCreateWithoutBranchInput> | PrinterCreateWithoutBranchInput[] | PrinterUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: PrinterCreateOrConnectWithoutBranchInput | PrinterCreateOrConnectWithoutBranchInput[]
+    createMany?: PrinterCreateManyBranchInputEnvelope
+    connect?: PrinterWhereUniqueInput | PrinterWhereUniqueInput[]
+  }
+
   export type UserUncheckedCreateNestedManyWithoutBranchInput = {
     create?: XOR<UserCreateWithoutBranchInput, UserUncheckedCreateWithoutBranchInput> | UserCreateWithoutBranchInput[] | UserUncheckedCreateWithoutBranchInput[]
     connectOrCreate?: UserCreateOrConnectWithoutBranchInput | UserCreateOrConnectWithoutBranchInput[]
@@ -16810,6 +18485,13 @@ export namespace Prisma {
     connectOrCreate?: KOTCreateOrConnectWithoutBranchInput | KOTCreateOrConnectWithoutBranchInput[]
     createMany?: KOTCreateManyBranchInputEnvelope
     connect?: KOTWhereUniqueInput | KOTWhereUniqueInput[]
+  }
+
+  export type PrinterUncheckedCreateNestedManyWithoutBranchInput = {
+    create?: XOR<PrinterCreateWithoutBranchInput, PrinterUncheckedCreateWithoutBranchInput> | PrinterCreateWithoutBranchInput[] | PrinterUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: PrinterCreateOrConnectWithoutBranchInput | PrinterCreateOrConnectWithoutBranchInput[]
+    createMany?: PrinterCreateManyBranchInputEnvelope
+    connect?: PrinterWhereUniqueInput | PrinterWhereUniqueInput[]
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -16890,6 +18572,20 @@ export namespace Prisma {
     deleteMany?: KOTScalarWhereInput | KOTScalarWhereInput[]
   }
 
+  export type PrinterUpdateManyWithoutBranchNestedInput = {
+    create?: XOR<PrinterCreateWithoutBranchInput, PrinterUncheckedCreateWithoutBranchInput> | PrinterCreateWithoutBranchInput[] | PrinterUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: PrinterCreateOrConnectWithoutBranchInput | PrinterCreateOrConnectWithoutBranchInput[]
+    upsert?: PrinterUpsertWithWhereUniqueWithoutBranchInput | PrinterUpsertWithWhereUniqueWithoutBranchInput[]
+    createMany?: PrinterCreateManyBranchInputEnvelope
+    set?: PrinterWhereUniqueInput | PrinterWhereUniqueInput[]
+    disconnect?: PrinterWhereUniqueInput | PrinterWhereUniqueInput[]
+    delete?: PrinterWhereUniqueInput | PrinterWhereUniqueInput[]
+    connect?: PrinterWhereUniqueInput | PrinterWhereUniqueInput[]
+    update?: PrinterUpdateWithWhereUniqueWithoutBranchInput | PrinterUpdateWithWhereUniqueWithoutBranchInput[]
+    updateMany?: PrinterUpdateManyWithWhereWithoutBranchInput | PrinterUpdateManyWithWhereWithoutBranchInput[]
+    deleteMany?: PrinterScalarWhereInput | PrinterScalarWhereInput[]
+  }
+
   export type UserUncheckedUpdateManyWithoutBranchNestedInput = {
     create?: XOR<UserCreateWithoutBranchInput, UserUncheckedCreateWithoutBranchInput> | UserCreateWithoutBranchInput[] | UserUncheckedCreateWithoutBranchInput[]
     connectOrCreate?: UserCreateOrConnectWithoutBranchInput | UserCreateOrConnectWithoutBranchInput[]
@@ -16946,10 +18642,36 @@ export namespace Prisma {
     deleteMany?: KOTScalarWhereInput | KOTScalarWhereInput[]
   }
 
+  export type PrinterUncheckedUpdateManyWithoutBranchNestedInput = {
+    create?: XOR<PrinterCreateWithoutBranchInput, PrinterUncheckedCreateWithoutBranchInput> | PrinterCreateWithoutBranchInput[] | PrinterUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: PrinterCreateOrConnectWithoutBranchInput | PrinterCreateOrConnectWithoutBranchInput[]
+    upsert?: PrinterUpsertWithWhereUniqueWithoutBranchInput | PrinterUpsertWithWhereUniqueWithoutBranchInput[]
+    createMany?: PrinterCreateManyBranchInputEnvelope
+    set?: PrinterWhereUniqueInput | PrinterWhereUniqueInput[]
+    disconnect?: PrinterWhereUniqueInput | PrinterWhereUniqueInput[]
+    delete?: PrinterWhereUniqueInput | PrinterWhereUniqueInput[]
+    connect?: PrinterWhereUniqueInput | PrinterWhereUniqueInput[]
+    update?: PrinterUpdateWithWhereUniqueWithoutBranchInput | PrinterUpdateWithWhereUniqueWithoutBranchInput[]
+    updateMany?: PrinterUpdateManyWithWhereWithoutBranchInput | PrinterUpdateManyWithWhereWithoutBranchInput[]
+    deleteMany?: PrinterScalarWhereInput | PrinterScalarWhereInput[]
+  }
+
   export type BranchCreateNestedOneWithoutUsersInput = {
     create?: XOR<BranchCreateWithoutUsersInput, BranchUncheckedCreateWithoutUsersInput>
     connectOrCreate?: BranchCreateOrConnectWithoutUsersInput
     connect?: BranchWhereUniqueInput
+  }
+
+  export type PrinterCreateNestedOneWithoutReceiptUsersInput = {
+    create?: XOR<PrinterCreateWithoutReceiptUsersInput, PrinterUncheckedCreateWithoutReceiptUsersInput>
+    connectOrCreate?: PrinterCreateOrConnectWithoutReceiptUsersInput
+    connect?: PrinterWhereUniqueInput
+  }
+
+  export type PrinterCreateNestedOneWithoutKotUsersInput = {
+    create?: XOR<PrinterCreateWithoutKotUsersInput, PrinterUncheckedCreateWithoutKotUsersInput>
+    connectOrCreate?: PrinterCreateOrConnectWithoutKotUsersInput
+    connect?: PrinterWhereUniqueInput
   }
 
   export type InvoiceCreateNestedManyWithoutBilledByInput = {
@@ -16980,6 +18702,26 @@ export namespace Prisma {
     update?: XOR<XOR<BranchUpdateToOneWithWhereWithoutUsersInput, BranchUpdateWithoutUsersInput>, BranchUncheckedUpdateWithoutUsersInput>
   }
 
+  export type PrinterUpdateOneWithoutReceiptUsersNestedInput = {
+    create?: XOR<PrinterCreateWithoutReceiptUsersInput, PrinterUncheckedCreateWithoutReceiptUsersInput>
+    connectOrCreate?: PrinterCreateOrConnectWithoutReceiptUsersInput
+    upsert?: PrinterUpsertWithoutReceiptUsersInput
+    disconnect?: PrinterWhereInput | boolean
+    delete?: PrinterWhereInput | boolean
+    connect?: PrinterWhereUniqueInput
+    update?: XOR<XOR<PrinterUpdateToOneWithWhereWithoutReceiptUsersInput, PrinterUpdateWithoutReceiptUsersInput>, PrinterUncheckedUpdateWithoutReceiptUsersInput>
+  }
+
+  export type PrinterUpdateOneWithoutKotUsersNestedInput = {
+    create?: XOR<PrinterCreateWithoutKotUsersInput, PrinterUncheckedCreateWithoutKotUsersInput>
+    connectOrCreate?: PrinterCreateOrConnectWithoutKotUsersInput
+    upsert?: PrinterUpsertWithoutKotUsersInput
+    disconnect?: PrinterWhereInput | boolean
+    delete?: PrinterWhereInput | boolean
+    connect?: PrinterWhereUniqueInput
+    update?: XOR<XOR<PrinterUpdateToOneWithWhereWithoutKotUsersInput, PrinterUpdateWithoutKotUsersInput>, PrinterUncheckedUpdateWithoutKotUsersInput>
+  }
+
   export type InvoiceUpdateManyWithoutBilledByNestedInput = {
     create?: XOR<InvoiceCreateWithoutBilledByInput, InvoiceUncheckedCreateWithoutBilledByInput> | InvoiceCreateWithoutBilledByInput[] | InvoiceUncheckedCreateWithoutBilledByInput[]
     connectOrCreate?: InvoiceCreateOrConnectWithoutBilledByInput | InvoiceCreateOrConnectWithoutBilledByInput[]
@@ -17006,6 +18748,104 @@ export namespace Prisma {
     update?: InvoiceUpdateWithWhereUniqueWithoutBilledByInput | InvoiceUpdateWithWhereUniqueWithoutBilledByInput[]
     updateMany?: InvoiceUpdateManyWithWhereWithoutBilledByInput | InvoiceUpdateManyWithWhereWithoutBilledByInput[]
     deleteMany?: InvoiceScalarWhereInput | InvoiceScalarWhereInput[]
+  }
+
+  export type BranchCreateNestedOneWithoutPrintersInput = {
+    create?: XOR<BranchCreateWithoutPrintersInput, BranchUncheckedCreateWithoutPrintersInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutPrintersInput
+    connect?: BranchWhereUniqueInput
+  }
+
+  export type UserCreateNestedManyWithoutReceiptPrinterInput = {
+    create?: XOR<UserCreateWithoutReceiptPrinterInput, UserUncheckedCreateWithoutReceiptPrinterInput> | UserCreateWithoutReceiptPrinterInput[] | UserUncheckedCreateWithoutReceiptPrinterInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutReceiptPrinterInput | UserCreateOrConnectWithoutReceiptPrinterInput[]
+    createMany?: UserCreateManyReceiptPrinterInputEnvelope
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type UserCreateNestedManyWithoutKotPrinterInput = {
+    create?: XOR<UserCreateWithoutKotPrinterInput, UserUncheckedCreateWithoutKotPrinterInput> | UserCreateWithoutKotPrinterInput[] | UserUncheckedCreateWithoutKotPrinterInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutKotPrinterInput | UserCreateOrConnectWithoutKotPrinterInput[]
+    createMany?: UserCreateManyKotPrinterInputEnvelope
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type UserUncheckedCreateNestedManyWithoutReceiptPrinterInput = {
+    create?: XOR<UserCreateWithoutReceiptPrinterInput, UserUncheckedCreateWithoutReceiptPrinterInput> | UserCreateWithoutReceiptPrinterInput[] | UserUncheckedCreateWithoutReceiptPrinterInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutReceiptPrinterInput | UserCreateOrConnectWithoutReceiptPrinterInput[]
+    createMany?: UserCreateManyReceiptPrinterInputEnvelope
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type UserUncheckedCreateNestedManyWithoutKotPrinterInput = {
+    create?: XOR<UserCreateWithoutKotPrinterInput, UserUncheckedCreateWithoutKotPrinterInput> | UserCreateWithoutKotPrinterInput[] | UserUncheckedCreateWithoutKotPrinterInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutKotPrinterInput | UserCreateOrConnectWithoutKotPrinterInput[]
+    createMany?: UserCreateManyKotPrinterInputEnvelope
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type BranchUpdateOneRequiredWithoutPrintersNestedInput = {
+    create?: XOR<BranchCreateWithoutPrintersInput, BranchUncheckedCreateWithoutPrintersInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutPrintersInput
+    upsert?: BranchUpsertWithoutPrintersInput
+    connect?: BranchWhereUniqueInput
+    update?: XOR<XOR<BranchUpdateToOneWithWhereWithoutPrintersInput, BranchUpdateWithoutPrintersInput>, BranchUncheckedUpdateWithoutPrintersInput>
+  }
+
+  export type UserUpdateManyWithoutReceiptPrinterNestedInput = {
+    create?: XOR<UserCreateWithoutReceiptPrinterInput, UserUncheckedCreateWithoutReceiptPrinterInput> | UserCreateWithoutReceiptPrinterInput[] | UserUncheckedCreateWithoutReceiptPrinterInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutReceiptPrinterInput | UserCreateOrConnectWithoutReceiptPrinterInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutReceiptPrinterInput | UserUpsertWithWhereUniqueWithoutReceiptPrinterInput[]
+    createMany?: UserCreateManyReceiptPrinterInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutReceiptPrinterInput | UserUpdateWithWhereUniqueWithoutReceiptPrinterInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutReceiptPrinterInput | UserUpdateManyWithWhereWithoutReceiptPrinterInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type UserUpdateManyWithoutKotPrinterNestedInput = {
+    create?: XOR<UserCreateWithoutKotPrinterInput, UserUncheckedCreateWithoutKotPrinterInput> | UserCreateWithoutKotPrinterInput[] | UserUncheckedCreateWithoutKotPrinterInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutKotPrinterInput | UserCreateOrConnectWithoutKotPrinterInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutKotPrinterInput | UserUpsertWithWhereUniqueWithoutKotPrinterInput[]
+    createMany?: UserCreateManyKotPrinterInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutKotPrinterInput | UserUpdateWithWhereUniqueWithoutKotPrinterInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutKotPrinterInput | UserUpdateManyWithWhereWithoutKotPrinterInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type UserUncheckedUpdateManyWithoutReceiptPrinterNestedInput = {
+    create?: XOR<UserCreateWithoutReceiptPrinterInput, UserUncheckedCreateWithoutReceiptPrinterInput> | UserCreateWithoutReceiptPrinterInput[] | UserUncheckedCreateWithoutReceiptPrinterInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutReceiptPrinterInput | UserCreateOrConnectWithoutReceiptPrinterInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutReceiptPrinterInput | UserUpsertWithWhereUniqueWithoutReceiptPrinterInput[]
+    createMany?: UserCreateManyReceiptPrinterInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutReceiptPrinterInput | UserUpdateWithWhereUniqueWithoutReceiptPrinterInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutReceiptPrinterInput | UserUpdateManyWithWhereWithoutReceiptPrinterInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type UserUncheckedUpdateManyWithoutKotPrinterNestedInput = {
+    create?: XOR<UserCreateWithoutKotPrinterInput, UserUncheckedCreateWithoutKotPrinterInput> | UserCreateWithoutKotPrinterInput[] | UserUncheckedCreateWithoutKotPrinterInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutKotPrinterInput | UserCreateOrConnectWithoutKotPrinterInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutKotPrinterInput | UserUpsertWithWhereUniqueWithoutKotPrinterInput[]
+    createMany?: UserCreateManyKotPrinterInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutKotPrinterInput | UserUpdateWithWhereUniqueWithoutKotPrinterInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutKotPrinterInput | UserUpdateManyWithWhereWithoutKotPrinterInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
   export type FloatFieldUpdateOperationsInput = {
@@ -17446,6 +19286,7 @@ export namespace Prisma {
     products?: ProductCreateNestedManyWithoutBranchInput
     invoices?: InvoiceCreateNestedManyWithoutBranchInput
     kots?: KOTCreateNestedManyWithoutBranchInput
+    printers?: PrinterCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutCompanyInput = {
@@ -17468,6 +19309,7 @@ export namespace Prisma {
     products?: ProductUncheckedCreateNestedManyWithoutBranchInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutBranchInput
     kots?: KOTUncheckedCreateNestedManyWithoutBranchInput
+    printers?: PrinterUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutCompanyInput = {
@@ -17577,6 +19419,8 @@ export namespace Prisma {
     designation?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    receiptPrinter?: PrinterCreateNestedOneWithoutReceiptUsersInput
+    kotPrinter?: PrinterCreateNestedOneWithoutKotUsersInput
     invoices?: InvoiceCreateNestedManyWithoutBilledByInput
   }
 
@@ -17590,6 +19434,8 @@ export namespace Prisma {
     isActive?: boolean
     department?: string | null
     designation?: string | null
+    receiptPrinterId?: string | null
+    kotPrinterId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     invoices?: InvoiceUncheckedCreateNestedManyWithoutBilledByInput
@@ -17725,6 +19571,40 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PrinterCreateWithoutBranchInput = {
+    id?: string
+    name: string
+    printerName: string
+    type?: string
+    isDefault?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    receiptUsers?: UserCreateNestedManyWithoutReceiptPrinterInput
+    kotUsers?: UserCreateNestedManyWithoutKotPrinterInput
+  }
+
+  export type PrinterUncheckedCreateWithoutBranchInput = {
+    id?: string
+    name: string
+    printerName: string
+    type?: string
+    isDefault?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    receiptUsers?: UserUncheckedCreateNestedManyWithoutReceiptPrinterInput
+    kotUsers?: UserUncheckedCreateNestedManyWithoutKotPrinterInput
+  }
+
+  export type PrinterCreateOrConnectWithoutBranchInput = {
+    where: PrinterWhereUniqueInput
+    create: XOR<PrinterCreateWithoutBranchInput, PrinterUncheckedCreateWithoutBranchInput>
+  }
+
+  export type PrinterCreateManyBranchInputEnvelope = {
+    data: PrinterCreateManyBranchInput | PrinterCreateManyBranchInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CompanyUpsertWithoutBranchesInput = {
     update: XOR<CompanyUpdateWithoutBranchesInput, CompanyUncheckedUpdateWithoutBranchesInput>
     create: XOR<CompanyCreateWithoutBranchesInput, CompanyUncheckedCreateWithoutBranchesInput>
@@ -17808,6 +19688,8 @@ export namespace Prisma {
     isActive?: BoolFilter<"User"> | boolean
     department?: StringNullableFilter<"User"> | string | null
     designation?: StringNullableFilter<"User"> | string | null
+    receiptPrinterId?: StringNullableFilter<"User"> | string | null
+    kotPrinterId?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
   }
@@ -17914,6 +19796,36 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"KOT"> | Date | string
   }
 
+  export type PrinterUpsertWithWhereUniqueWithoutBranchInput = {
+    where: PrinterWhereUniqueInput
+    update: XOR<PrinterUpdateWithoutBranchInput, PrinterUncheckedUpdateWithoutBranchInput>
+    create: XOR<PrinterCreateWithoutBranchInput, PrinterUncheckedCreateWithoutBranchInput>
+  }
+
+  export type PrinterUpdateWithWhereUniqueWithoutBranchInput = {
+    where: PrinterWhereUniqueInput
+    data: XOR<PrinterUpdateWithoutBranchInput, PrinterUncheckedUpdateWithoutBranchInput>
+  }
+
+  export type PrinterUpdateManyWithWhereWithoutBranchInput = {
+    where: PrinterScalarWhereInput
+    data: XOR<PrinterUpdateManyMutationInput, PrinterUncheckedUpdateManyWithoutBranchInput>
+  }
+
+  export type PrinterScalarWhereInput = {
+    AND?: PrinterScalarWhereInput | PrinterScalarWhereInput[]
+    OR?: PrinterScalarWhereInput[]
+    NOT?: PrinterScalarWhereInput | PrinterScalarWhereInput[]
+    id?: StringFilter<"Printer"> | string
+    name?: StringFilter<"Printer"> | string
+    printerName?: StringFilter<"Printer"> | string
+    type?: StringFilter<"Printer"> | string
+    isDefault?: BoolFilter<"Printer"> | boolean
+    branchId?: StringFilter<"Printer"> | string
+    createdAt?: DateTimeFilter<"Printer"> | Date | string
+    updatedAt?: DateTimeFilter<"Printer"> | Date | string
+  }
+
   export type BranchCreateWithoutUsersInput = {
     id?: string
     name: string
@@ -17934,6 +19846,7 @@ export namespace Prisma {
     products?: ProductCreateNestedManyWithoutBranchInput
     invoices?: InvoiceCreateNestedManyWithoutBranchInput
     kots?: KOTCreateNestedManyWithoutBranchInput
+    printers?: PrinterCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutUsersInput = {
@@ -17956,11 +19869,70 @@ export namespace Prisma {
     products?: ProductUncheckedCreateNestedManyWithoutBranchInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutBranchInput
     kots?: KOTUncheckedCreateNestedManyWithoutBranchInput
+    printers?: PrinterUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutUsersInput = {
     where: BranchWhereUniqueInput
     create: XOR<BranchCreateWithoutUsersInput, BranchUncheckedCreateWithoutUsersInput>
+  }
+
+  export type PrinterCreateWithoutReceiptUsersInput = {
+    id?: string
+    name: string
+    printerName: string
+    type?: string
+    isDefault?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutPrintersInput
+    kotUsers?: UserCreateNestedManyWithoutKotPrinterInput
+  }
+
+  export type PrinterUncheckedCreateWithoutReceiptUsersInput = {
+    id?: string
+    name: string
+    printerName: string
+    type?: string
+    isDefault?: boolean
+    branchId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    kotUsers?: UserUncheckedCreateNestedManyWithoutKotPrinterInput
+  }
+
+  export type PrinterCreateOrConnectWithoutReceiptUsersInput = {
+    where: PrinterWhereUniqueInput
+    create: XOR<PrinterCreateWithoutReceiptUsersInput, PrinterUncheckedCreateWithoutReceiptUsersInput>
+  }
+
+  export type PrinterCreateWithoutKotUsersInput = {
+    id?: string
+    name: string
+    printerName: string
+    type?: string
+    isDefault?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutPrintersInput
+    receiptUsers?: UserCreateNestedManyWithoutReceiptPrinterInput
+  }
+
+  export type PrinterUncheckedCreateWithoutKotUsersInput = {
+    id?: string
+    name: string
+    printerName: string
+    type?: string
+    isDefault?: boolean
+    branchId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    receiptUsers?: UserUncheckedCreateNestedManyWithoutReceiptPrinterInput
+  }
+
+  export type PrinterCreateOrConnectWithoutKotUsersInput = {
+    where: PrinterWhereUniqueInput
+    create: XOR<PrinterCreateWithoutKotUsersInput, PrinterUncheckedCreateWithoutKotUsersInput>
   }
 
   export type InvoiceCreateWithoutBilledByInput = {
@@ -18046,6 +20018,7 @@ export namespace Prisma {
     products?: ProductUpdateManyWithoutBranchNestedInput
     invoices?: InvoiceUpdateManyWithoutBranchNestedInput
     kots?: KOTUpdateManyWithoutBranchNestedInput
+    printers?: PrinterUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutUsersInput = {
@@ -18068,6 +20041,77 @@ export namespace Prisma {
     products?: ProductUncheckedUpdateManyWithoutBranchNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutBranchNestedInput
     kots?: KOTUncheckedUpdateManyWithoutBranchNestedInput
+    printers?: PrinterUncheckedUpdateManyWithoutBranchNestedInput
+  }
+
+  export type PrinterUpsertWithoutReceiptUsersInput = {
+    update: XOR<PrinterUpdateWithoutReceiptUsersInput, PrinterUncheckedUpdateWithoutReceiptUsersInput>
+    create: XOR<PrinterCreateWithoutReceiptUsersInput, PrinterUncheckedCreateWithoutReceiptUsersInput>
+    where?: PrinterWhereInput
+  }
+
+  export type PrinterUpdateToOneWithWhereWithoutReceiptUsersInput = {
+    where?: PrinterWhereInput
+    data: XOR<PrinterUpdateWithoutReceiptUsersInput, PrinterUncheckedUpdateWithoutReceiptUsersInput>
+  }
+
+  export type PrinterUpdateWithoutReceiptUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    printerName?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutPrintersNestedInput
+    kotUsers?: UserUpdateManyWithoutKotPrinterNestedInput
+  }
+
+  export type PrinterUncheckedUpdateWithoutReceiptUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    printerName?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    branchId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    kotUsers?: UserUncheckedUpdateManyWithoutKotPrinterNestedInput
+  }
+
+  export type PrinterUpsertWithoutKotUsersInput = {
+    update: XOR<PrinterUpdateWithoutKotUsersInput, PrinterUncheckedUpdateWithoutKotUsersInput>
+    create: XOR<PrinterCreateWithoutKotUsersInput, PrinterUncheckedCreateWithoutKotUsersInput>
+    where?: PrinterWhereInput
+  }
+
+  export type PrinterUpdateToOneWithWhereWithoutKotUsersInput = {
+    where?: PrinterWhereInput
+    data: XOR<PrinterUpdateWithoutKotUsersInput, PrinterUncheckedUpdateWithoutKotUsersInput>
+  }
+
+  export type PrinterUpdateWithoutKotUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    printerName?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutPrintersNestedInput
+    receiptUsers?: UserUpdateManyWithoutReceiptPrinterNestedInput
+  }
+
+  export type PrinterUncheckedUpdateWithoutKotUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    printerName?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    branchId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    receiptUsers?: UserUncheckedUpdateManyWithoutReceiptPrinterNestedInput
   }
 
   export type InvoiceUpsertWithWhereUniqueWithoutBilledByInput = {
@@ -18084,6 +20128,234 @@ export namespace Prisma {
   export type InvoiceUpdateManyWithWhereWithoutBilledByInput = {
     where: InvoiceScalarWhereInput
     data: XOR<InvoiceUpdateManyMutationInput, InvoiceUncheckedUpdateManyWithoutBilledByInput>
+  }
+
+  export type BranchCreateWithoutPrintersInput = {
+    id?: string
+    name: string
+    street: string
+    city: string
+    state: string
+    country: string
+    zipCode: string
+    email?: string | null
+    phone: string
+    invoiceSequence?: number
+    kotSequence?: number
+    active?: boolean
+    printerName?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    company?: CompanyCreateNestedOneWithoutBranchesInput
+    users?: UserCreateNestedManyWithoutBranchInput
+    products?: ProductCreateNestedManyWithoutBranchInput
+    invoices?: InvoiceCreateNestedManyWithoutBranchInput
+    kots?: KOTCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchUncheckedCreateWithoutPrintersInput = {
+    id?: string
+    name: string
+    street: string
+    city: string
+    state: string
+    country: string
+    zipCode: string
+    email?: string | null
+    phone: string
+    invoiceSequence?: number
+    kotSequence?: number
+    active?: boolean
+    printerName?: string | null
+    companyId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserUncheckedCreateNestedManyWithoutBranchInput
+    products?: ProductUncheckedCreateNestedManyWithoutBranchInput
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutBranchInput
+    kots?: KOTUncheckedCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchCreateOrConnectWithoutPrintersInput = {
+    where: BranchWhereUniqueInput
+    create: XOR<BranchCreateWithoutPrintersInput, BranchUncheckedCreateWithoutPrintersInput>
+  }
+
+  export type UserCreateWithoutReceiptPrinterInput = {
+    id?: string
+    name: string
+    email: string
+    passwordHash: string
+    role?: $Enums.Role
+    phone?: string | null
+    isActive?: boolean
+    department?: string | null
+    designation?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch?: BranchCreateNestedOneWithoutUsersInput
+    kotPrinter?: PrinterCreateNestedOneWithoutKotUsersInput
+    invoices?: InvoiceCreateNestedManyWithoutBilledByInput
+  }
+
+  export type UserUncheckedCreateWithoutReceiptPrinterInput = {
+    id?: string
+    name: string
+    email: string
+    passwordHash: string
+    role?: $Enums.Role
+    branchId?: string | null
+    phone?: string | null
+    isActive?: boolean
+    department?: string | null
+    designation?: string | null
+    kotPrinterId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutBilledByInput
+  }
+
+  export type UserCreateOrConnectWithoutReceiptPrinterInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutReceiptPrinterInput, UserUncheckedCreateWithoutReceiptPrinterInput>
+  }
+
+  export type UserCreateManyReceiptPrinterInputEnvelope = {
+    data: UserCreateManyReceiptPrinterInput | UserCreateManyReceiptPrinterInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserCreateWithoutKotPrinterInput = {
+    id?: string
+    name: string
+    email: string
+    passwordHash: string
+    role?: $Enums.Role
+    phone?: string | null
+    isActive?: boolean
+    department?: string | null
+    designation?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch?: BranchCreateNestedOneWithoutUsersInput
+    receiptPrinter?: PrinterCreateNestedOneWithoutReceiptUsersInput
+    invoices?: InvoiceCreateNestedManyWithoutBilledByInput
+  }
+
+  export type UserUncheckedCreateWithoutKotPrinterInput = {
+    id?: string
+    name: string
+    email: string
+    passwordHash: string
+    role?: $Enums.Role
+    branchId?: string | null
+    phone?: string | null
+    isActive?: boolean
+    department?: string | null
+    designation?: string | null
+    receiptPrinterId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutBilledByInput
+  }
+
+  export type UserCreateOrConnectWithoutKotPrinterInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutKotPrinterInput, UserUncheckedCreateWithoutKotPrinterInput>
+  }
+
+  export type UserCreateManyKotPrinterInputEnvelope = {
+    data: UserCreateManyKotPrinterInput | UserCreateManyKotPrinterInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type BranchUpsertWithoutPrintersInput = {
+    update: XOR<BranchUpdateWithoutPrintersInput, BranchUncheckedUpdateWithoutPrintersInput>
+    create: XOR<BranchCreateWithoutPrintersInput, BranchUncheckedCreateWithoutPrintersInput>
+    where?: BranchWhereInput
+  }
+
+  export type BranchUpdateToOneWithWhereWithoutPrintersInput = {
+    where?: BranchWhereInput
+    data: XOR<BranchUpdateWithoutPrintersInput, BranchUncheckedUpdateWithoutPrintersInput>
+  }
+
+  export type BranchUpdateWithoutPrintersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    street?: StringFieldUpdateOperationsInput | string
+    city?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    country?: StringFieldUpdateOperationsInput | string
+    zipCode?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: StringFieldUpdateOperationsInput | string
+    invoiceSequence?: IntFieldUpdateOperationsInput | number
+    kotSequence?: IntFieldUpdateOperationsInput | number
+    active?: BoolFieldUpdateOperationsInput | boolean
+    printerName?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    company?: CompanyUpdateOneWithoutBranchesNestedInput
+    users?: UserUpdateManyWithoutBranchNestedInput
+    products?: ProductUpdateManyWithoutBranchNestedInput
+    invoices?: InvoiceUpdateManyWithoutBranchNestedInput
+    kots?: KOTUpdateManyWithoutBranchNestedInput
+  }
+
+  export type BranchUncheckedUpdateWithoutPrintersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    street?: StringFieldUpdateOperationsInput | string
+    city?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    country?: StringFieldUpdateOperationsInput | string
+    zipCode?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: StringFieldUpdateOperationsInput | string
+    invoiceSequence?: IntFieldUpdateOperationsInput | number
+    kotSequence?: IntFieldUpdateOperationsInput | number
+    active?: BoolFieldUpdateOperationsInput | boolean
+    printerName?: NullableStringFieldUpdateOperationsInput | string | null
+    companyId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUncheckedUpdateManyWithoutBranchNestedInput
+    products?: ProductUncheckedUpdateManyWithoutBranchNestedInput
+    invoices?: InvoiceUncheckedUpdateManyWithoutBranchNestedInput
+    kots?: KOTUncheckedUpdateManyWithoutBranchNestedInput
+  }
+
+  export type UserUpsertWithWhereUniqueWithoutReceiptPrinterInput = {
+    where: UserWhereUniqueInput
+    update: XOR<UserUpdateWithoutReceiptPrinterInput, UserUncheckedUpdateWithoutReceiptPrinterInput>
+    create: XOR<UserCreateWithoutReceiptPrinterInput, UserUncheckedCreateWithoutReceiptPrinterInput>
+  }
+
+  export type UserUpdateWithWhereUniqueWithoutReceiptPrinterInput = {
+    where: UserWhereUniqueInput
+    data: XOR<UserUpdateWithoutReceiptPrinterInput, UserUncheckedUpdateWithoutReceiptPrinterInput>
+  }
+
+  export type UserUpdateManyWithWhereWithoutReceiptPrinterInput = {
+    where: UserScalarWhereInput
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutReceiptPrinterInput>
+  }
+
+  export type UserUpsertWithWhereUniqueWithoutKotPrinterInput = {
+    where: UserWhereUniqueInput
+    update: XOR<UserUpdateWithoutKotPrinterInput, UserUncheckedUpdateWithoutKotPrinterInput>
+    create: XOR<UserCreateWithoutKotPrinterInput, UserUncheckedCreateWithoutKotPrinterInput>
+  }
+
+  export type UserUpdateWithWhereUniqueWithoutKotPrinterInput = {
+    where: UserWhereUniqueInput
+    data: XOR<UserUpdateWithoutKotPrinterInput, UserUncheckedUpdateWithoutKotPrinterInput>
+  }
+
+  export type UserUpdateManyWithWhereWithoutKotPrinterInput = {
+    where: UserScalarWhereInput
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutKotPrinterInput>
   }
 
   export type BranchCreateWithoutProductsInput = {
@@ -18106,6 +20378,7 @@ export namespace Prisma {
     users?: UserCreateNestedManyWithoutBranchInput
     invoices?: InvoiceCreateNestedManyWithoutBranchInput
     kots?: KOTCreateNestedManyWithoutBranchInput
+    printers?: PrinterCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutProductsInput = {
@@ -18128,6 +20401,7 @@ export namespace Prisma {
     users?: UserUncheckedCreateNestedManyWithoutBranchInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutBranchInput
     kots?: KOTUncheckedCreateNestedManyWithoutBranchInput
+    printers?: PrinterUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutProductsInput = {
@@ -18166,6 +20440,7 @@ export namespace Prisma {
     users?: UserUpdateManyWithoutBranchNestedInput
     invoices?: InvoiceUpdateManyWithoutBranchNestedInput
     kots?: KOTUpdateManyWithoutBranchNestedInput
+    printers?: PrinterUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutProductsInput = {
@@ -18188,6 +20463,7 @@ export namespace Prisma {
     users?: UserUncheckedUpdateManyWithoutBranchNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutBranchNestedInput
     kots?: KOTUncheckedUpdateManyWithoutBranchNestedInput
+    printers?: PrinterUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCreateWithoutInvoicesInput = {
@@ -18210,6 +20486,7 @@ export namespace Prisma {
     users?: UserCreateNestedManyWithoutBranchInput
     products?: ProductCreateNestedManyWithoutBranchInput
     kots?: KOTCreateNestedManyWithoutBranchInput
+    printers?: PrinterCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutInvoicesInput = {
@@ -18232,6 +20509,7 @@ export namespace Prisma {
     users?: UserUncheckedCreateNestedManyWithoutBranchInput
     products?: ProductUncheckedCreateNestedManyWithoutBranchInput
     kots?: KOTUncheckedCreateNestedManyWithoutBranchInput
+    printers?: PrinterUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutInvoicesInput = {
@@ -18252,6 +20530,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     branch?: BranchCreateNestedOneWithoutUsersInput
+    receiptPrinter?: PrinterCreateNestedOneWithoutReceiptUsersInput
+    kotPrinter?: PrinterCreateNestedOneWithoutKotUsersInput
   }
 
   export type UserUncheckedCreateWithoutInvoicesInput = {
@@ -18265,6 +20545,8 @@ export namespace Prisma {
     isActive?: boolean
     department?: string | null
     designation?: string | null
+    receiptPrinterId?: string | null
+    kotPrinterId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -18371,6 +20653,7 @@ export namespace Prisma {
     users?: UserUpdateManyWithoutBranchNestedInput
     products?: ProductUpdateManyWithoutBranchNestedInput
     kots?: KOTUpdateManyWithoutBranchNestedInput
+    printers?: PrinterUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutInvoicesInput = {
@@ -18393,6 +20676,7 @@ export namespace Prisma {
     users?: UserUncheckedUpdateManyWithoutBranchNestedInput
     products?: ProductUncheckedUpdateManyWithoutBranchNestedInput
     kots?: KOTUncheckedUpdateManyWithoutBranchNestedInput
+    printers?: PrinterUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type UserUpsertWithoutInvoicesInput = {
@@ -18419,6 +20703,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branch?: BranchUpdateOneWithoutUsersNestedInput
+    receiptPrinter?: PrinterUpdateOneWithoutReceiptUsersNestedInput
+    kotPrinter?: PrinterUpdateOneWithoutKotUsersNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInvoicesInput = {
@@ -18432,6 +20718,8 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     department?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    receiptPrinterId?: NullableStringFieldUpdateOperationsInput | string | null
+    kotPrinterId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -18603,6 +20891,7 @@ export namespace Prisma {
     users?: UserCreateNestedManyWithoutBranchInput
     products?: ProductCreateNestedManyWithoutBranchInput
     invoices?: InvoiceCreateNestedManyWithoutBranchInput
+    printers?: PrinterCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutKotsInput = {
@@ -18625,6 +20914,7 @@ export namespace Prisma {
     users?: UserUncheckedCreateNestedManyWithoutBranchInput
     products?: ProductUncheckedCreateNestedManyWithoutBranchInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutBranchInput
+    printers?: PrinterUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutKotsInput = {
@@ -18742,6 +21032,7 @@ export namespace Prisma {
     users?: UserUpdateManyWithoutBranchNestedInput
     products?: ProductUpdateManyWithoutBranchNestedInput
     invoices?: InvoiceUpdateManyWithoutBranchNestedInput
+    printers?: PrinterUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutKotsInput = {
@@ -18764,6 +21055,7 @@ export namespace Prisma {
     users?: UserUncheckedUpdateManyWithoutBranchNestedInput
     products?: ProductUncheckedUpdateManyWithoutBranchNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutBranchNestedInput
+    printers?: PrinterUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type InvoiceUpsertWithoutKotsInput = {
@@ -18952,6 +21244,7 @@ export namespace Prisma {
     products?: ProductUpdateManyWithoutBranchNestedInput
     invoices?: InvoiceUpdateManyWithoutBranchNestedInput
     kots?: KOTUpdateManyWithoutBranchNestedInput
+    printers?: PrinterUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutCompanyInput = {
@@ -18974,6 +21267,7 @@ export namespace Prisma {
     products?: ProductUncheckedUpdateManyWithoutBranchNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutBranchNestedInput
     kots?: KOTUncheckedUpdateManyWithoutBranchNestedInput
+    printers?: PrinterUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateManyWithoutCompanyInput = {
@@ -19004,6 +21298,8 @@ export namespace Prisma {
     isActive?: boolean
     department?: string | null
     designation?: string | null
+    receiptPrinterId?: string | null
+    kotPrinterId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -19050,6 +21346,16 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type PrinterCreateManyBranchInput = {
+    id?: string
+    name: string
+    printerName: string
+    type?: string
+    isDefault?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type UserUpdateWithoutBranchInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -19062,6 +21368,8 @@ export namespace Prisma {
     designation?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    receiptPrinter?: PrinterUpdateOneWithoutReceiptUsersNestedInput
+    kotPrinter?: PrinterUpdateOneWithoutKotUsersNestedInput
     invoices?: InvoiceUpdateManyWithoutBilledByNestedInput
   }
 
@@ -19075,6 +21383,8 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     department?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    receiptPrinterId?: NullableStringFieldUpdateOperationsInput | string | null
+    kotPrinterId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     invoices?: InvoiceUncheckedUpdateManyWithoutBilledByNestedInput
@@ -19090,6 +21400,8 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     department?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    receiptPrinterId?: NullableStringFieldUpdateOperationsInput | string | null
+    kotPrinterId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -19226,6 +21538,40 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PrinterUpdateWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    printerName?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    receiptUsers?: UserUpdateManyWithoutReceiptPrinterNestedInput
+    kotUsers?: UserUpdateManyWithoutKotPrinterNestedInput
+  }
+
+  export type PrinterUncheckedUpdateWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    printerName?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    receiptUsers?: UserUncheckedUpdateManyWithoutReceiptPrinterNestedInput
+    kotUsers?: UserUncheckedUpdateManyWithoutKotPrinterNestedInput
+  }
+
+  export type PrinterUncheckedUpdateManyWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    printerName?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type InvoiceCreateManyBilledByInput = {
     id?: string
     invoiceId: string
@@ -19302,6 +21648,138 @@ export namespace Prisma {
     invoiceStatus?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     delete?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserCreateManyReceiptPrinterInput = {
+    id?: string
+    name: string
+    email: string
+    passwordHash: string
+    role?: $Enums.Role
+    branchId?: string | null
+    phone?: string | null
+    isActive?: boolean
+    department?: string | null
+    designation?: string | null
+    kotPrinterId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserCreateManyKotPrinterInput = {
+    id?: string
+    name: string
+    email: string
+    passwordHash: string
+    role?: $Enums.Role
+    branchId?: string | null
+    phone?: string | null
+    isActive?: boolean
+    department?: string | null
+    designation?: string | null
+    receiptPrinterId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserUpdateWithoutReceiptPrinterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneWithoutUsersNestedInput
+    kotPrinter?: PrinterUpdateOneWithoutKotUsersNestedInput
+    invoices?: InvoiceUpdateManyWithoutBilledByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutReceiptPrinterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    kotPrinterId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    invoices?: InvoiceUncheckedUpdateManyWithoutBilledByNestedInput
+  }
+
+  export type UserUncheckedUpdateManyWithoutReceiptPrinterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    kotPrinterId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserUpdateWithoutKotPrinterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneWithoutUsersNestedInput
+    receiptPrinter?: PrinterUpdateOneWithoutReceiptUsersNestedInput
+    invoices?: InvoiceUpdateManyWithoutBilledByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutKotPrinterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    receiptPrinterId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    invoices?: InvoiceUncheckedUpdateManyWithoutBilledByNestedInput
+  }
+
+  export type UserUncheckedUpdateManyWithoutKotPrinterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    receiptPrinterId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
