@@ -12,7 +12,7 @@ export default function DocumentWatermark({ companyName, hasLogo = true }: Docum
   return (
     <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden z-0">
       {hasLogo ? (
-        <div className="relative w-56 h-56 md:w-64 md:h-64 opacity-[0.06] transform -rotate-12 transition-transform">
+        <div className="relative w-56 h-56 md:w-64 md:h-64 opacity-[0.2] transform -rotate-12 transition-transform">
           <Image
             src="/aarna.png"
             alt="Watermark Logo"
