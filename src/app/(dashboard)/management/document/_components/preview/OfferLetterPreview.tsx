@@ -28,48 +28,59 @@ export default function OfferLetterPreview({
     <div className="relative w-full aspect-[1/1.414] bg-white text-zinc-900 border border-zinc-300 rounded-lg shadow-2xl overflow-hidden flex flex-col justify-between select-none">
       {/* 1. TOP ORANGE ACCENT HEADER BAR */}
       <div className="w-full">
-        <div className="h-2 w-full bg-gradient-to-r from-orange-600 to-amber-500" />
-        <div className="h-0.5 w-full bg-amber-400" />
+        <div className="h-4 w-full bg-gradient-to-r from-orange-600 to-amber-500" />
+        <div className="h-1 w-full bg-amber-400" />
       </div>
 
       {/* 2. CENTRAL WATERMARK */}
       <DocumentWatermark companyName={company?.name} hasLogo={true} />
 
       {/* 3. MAIN DOCUMENT BODY */}
-      <div className="relative z-10 px-6 py-5 space-y-3.5 text-[8px] leading-relaxed flex-1 overflow-y-auto scrollbar-thin">
+      <div className="relative z-10 px-6 py-4 space-y-3 text-[8px] leading-relaxed flex-1 overflow-y-auto scrollbar-thin">
         {/* Brand Header */}
-        <div className="flex justify-between items-start border-b border-amber-500/30 pb-3">
-          <div className="flex items-center gap-3">
-            <div className="relative w-10 h-10 shrink-0">
-              <Image
-                src="/aarna.png"
-                alt="Aarna Logo"
-                fill
-                sizes="40px"
-                className="object-contain"
-              />
-            </div>
-            <div>
-              <h4 className="text-xs font-black text-orange-600 tracking-wider">
-                {company?.name || "AARNA INDIAN FOOD"}
-              </h4>
-              <p className="text-[7.5px] text-zinc-500 font-semibold">
-                {company?.street || "123 Main Rd"}, {company?.city || "Georgetown"}, {company?.country || "Guyana"}
+        <div className="flex justify-between items-center border-b border-amber-500/30 pb-2.5">
+          {/* Left: Company Details & Both Branch Addresses */}
+          <div className="space-y-0.5 max-w-[72%]">
+            <h4 className="text-[11px] font-black text-orange-600 tracking-wider">
+              {company?.name || "AARNA INDIAN FOOD"}
+            </h4>
+            <div className="text-[6.8px] text-zinc-600 leading-tight space-y-0.5">
+              <p>
+                <span className="font-bold text-zinc-800">Georgetown:</span> Lot 51 Seaforth St, Campbellville, Georgetown, Guyana
               </p>
-              <p className="text-[7px] text-zinc-400">
-                Phone: {company?.phone || "+592-xxx-xxxx"} | Email: {company?.email || "info@aarnaindia.com"}
+              <p>
+                <span className="font-bold text-zinc-800">Berbice:</span> Lot 121, Public Road, No.2 Village, East Canje Berbice, Guyana
               </p>
             </div>
-          </div>
-
-          <div className="text-right bg-orange-50/80 border border-amber-300/80 px-3 py-1.5 rounded">
-            <h3 className="text-[10px] font-black text-orange-600 tracking-widest leading-tight">
-              OFFER LETTER
-            </h3>
-            <p className="text-[7px] text-zinc-600 font-medium mt-0.5">
-              Date: <span className="font-bold text-zinc-900">{todayStr}</span>
+            <p className="text-[6.5px] text-zinc-500 pt-0.5">
+              <span>Tel: {company?.phone || "+592 675-0093 / +592 759-3957"}</span>
+              <span className="mx-1 text-zinc-300">|</span>
+              <span>Email: {company?.email || "info@aarnaindianfood.com"}</span>
+              <span className="mx-1 text-zinc-300">|</span>
+              <span className="text-orange-600 font-bold">Web: aarnaindianfood.com</span>
             </p>
           </div>
+
+          {/* Right: 50% Bigger Logo (60px vs 40px) */}
+          <div className="relative w-[60px] h-[60px] shrink-0">
+            <Image
+              src="/aarna.png"
+              alt="Aarna Logo"
+              fill
+              sizes="60px"
+              className="object-contain"
+            />
+          </div>
+        </div>
+
+        {/* Document Title Bar */}
+        <div className="flex justify-between items-center bg-orange-50/90 border border-amber-300/80 px-3 py-1 rounded shadow-xs">
+          <h3 className="text-[9.5px] font-black text-orange-600 tracking-widest leading-tight">
+            OFFER LETTER
+          </h3>
+          <p className="text-[7px] text-zinc-600 font-medium">
+            Date: <span className="font-bold text-zinc-900">{todayStr}</span>
+          </p>
         </div>
 
         {/* Candidate Address Block */}
@@ -164,10 +175,10 @@ export default function OfferLetterPreview({
 
       {/* 4. ORANGE ACCENT FOOTER BAR */}
       <div className="w-full relative z-10">
-        <div className="h-0.5 w-full bg-amber-400" />
-        <div className="bg-gradient-to-r from-orange-600 to-amber-600 text-white px-6 py-1.5 flex justify-between items-center text-[7px]">
+        <div className="h-1 w-full bg-amber-400" />
+        <div className="bg-gradient-to-r from-orange-600 to-amber-600 text-white px-6 py-2 flex justify-between items-center text-[7px]">
           <span className="font-bold tracking-wider uppercase">Official Offer Document  •  Confidential</span>
-          <span className="opacity-90">{company?.name || "Aarna Indian Food"} HR Operations</span>
+          <span className="opacity-95 font-medium">aarnaindianfood.com  •  {company?.name || "Aarna Indian Food"}</span>
         </div>
       </div>
     </div>

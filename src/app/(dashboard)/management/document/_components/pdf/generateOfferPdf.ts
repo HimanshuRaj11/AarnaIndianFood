@@ -29,13 +29,13 @@ export function generateOfferPDF(
   let currentY = drawPdfHeader(doc, "OFFER LETTER", `Date: ${todayStr}`, company, logoBase64);
 
   // 3. Date & Candidate Address
-  currentY += 8;
+  currentY += 6;
   doc.setTextColor(...PDF_COLORS.textDark);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(9.5);
   doc.text(`Ref: AIF/HR/OFFER/${new Date().getFullYear()}/${Math.floor(1000 + Math.random() * 9000)}`, 15, currentY);
 
-  currentY += 7;
+  currentY += 5.5;
   doc.setFont("helvetica", "bold");
   doc.setFontSize(9);
   doc.text("To,", 15, currentY);

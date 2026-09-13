@@ -47,71 +47,81 @@ export function drawPdfHeader(
   company: CompanyInfo | null,
   logoBase64: string | null
 ): number {
-  // Top solid vibrant orange banner
+  // 1. Top vibrant orange header bar (increased height: 10mm primary + 2mm accent stripe)
   doc.setFillColor(...PDF_COLORS.primaryOrange);
-  doc.rect(0, 0, 210, 6, "F");
+  doc.rect(0, 0, 210, 10, "F");
 
   // Secondary amber accent stripe
   doc.setFillColor(...PDF_COLORS.accentAmber);
-  doc.rect(0, 6, 210, 1.5, "F");
+  doc.rect(0, 10, 210, 2, "F");
 
-  // Brand Logo or Fallback Title
-  let currentY = 16;
+  // 2. Brand Logo on the RIGHT SIDE (scaled 50% larger: 24x24mm vs original 16x16mm)
   if (logoBase64) {
-    // 500x500 logo scaled to 16x16mm
-    doc.addImage(logoBase64, "PNG", 15, currentY, 16, 16);
-    doc.setTextColor(...PDF_COLORS.primaryOrange);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(16);
-    doc.text(company?.name || "AARNA INDIAN FOOD", 35, currentY + 7);
-
-    // Company address
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(8);
-    doc.setTextColor(...PDF_COLORS.textMuted);
-    const companyAddress = `${company?.street || "123 Main Rd"}, ${company?.city || "Georgetown"}, ${company?.state || "Demerara"}, ${company?.country || "Guyana"}`;
-    doc.text(companyAddress, 35, currentY + 11.5);
-    doc.text(`Phone: ${company?.phone || "+592-xxx-xxxx"} | Email: ${company?.email || "info@aarnaindia.com"}`, 35, currentY + 15.5);
-    currentY += 20;
-  } else {
-    doc.setTextColor(...PDF_COLORS.primaryOrange);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(20);
-    doc.text(company?.name || "AARNA INDIAN FOOD", 15, currentY + 6);
-
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(8.5);
-    doc.setTextColor(...PDF_COLORS.textMuted);
-    const companyAddress = `${company?.street || "123 Main Rd"}, ${company?.city || "Georgetown"}, ${company?.state || "Demerara"}, ${company?.country || "Guyana"}`;
-    doc.text(companyAddress, 15, currentY + 11);
-    doc.text(`Phone: ${company?.phone || "+592-xxx-xxxx"} | Email: ${company?.email || "info@aarnaindia.com"}`, 15, currentY + 15);
-    currentY += 19;
+    // Printable width right edge is 195mm (15mm right margin). 195 - 24 = 171mm
+    doc.addImage(logoBase64, "PNG", 171, 14, 24, 24);
   }
 
-  // Right-aligned Document Title Badge
+  // 3. Company Brand & Branch Addresses on LEFT SIDE (x = 15mm)
+  let currentY = 19;
+  doc.setTextColor(...PDF_COLORS.primaryOrange);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(15);
+  doc.text(company?.name || "AARNA INDIAN FOOD", 15, currentY);
+
+  // Address 1: Georgetown
+  currentY += 5;
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(7.5);
+  doc.setTextColor(...PDF_COLORS.textDark);
+  doc.text("Georgetown:", 15, currentY);
+  doc.setFont("helvetica", "normal");
+  doc.setTextColor(...PDF_COLORS.textMuted);
+  doc.text("Lot 51 Seaforth St, Campbellville, Georgetown, Guyana", 33, currentY);
+
+  // Address 2: Berbice
+  currentY += 4.2;
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor(...PDF_COLORS.textDark);
+  doc.text("Berbice:", 15, currentY);
+  doc.setFont("helvetica", "normal");
+  doc.setTextColor(...PDF_COLORS.textMuted);
+  doc.text("Lot 121, Public Road, No.2 Village, East Canje Berbice, Guyana", 27.5, currentY);
+
+  // Contact line with website
+  currentY += 4.5;
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(7);
+  doc.setTextColor(...PDF_COLORS.textMuted);
+  const phoneStr = company?.phone || "+592 675-0093 / +592 759-3957";
+  const emailStr = company?.email || "info@aarnaindianfood.com";
+  const websiteStr = "aarnaindianfood.com";
+  doc.text(`Tel: ${phoneStr}   |   Email: ${emailStr}   |   Web: ${websiteStr}`, 15, currentY);
+
+  // 4. Document Title Bar below brand details
+  const badgeY = 37.5;
   doc.setFillColor(...PDF_COLORS.lightOrangeBg);
-  doc.rect(130, 15, 65, 16, "F");
+  doc.rect(15, badgeY, 180, 7.5, "F");
   doc.setDrawColor(...PDF_COLORS.accentAmber);
   doc.setLineWidth(0.4);
-  doc.rect(130, 15, 65, 16);
+  doc.rect(15, badgeY, 180, 7.5);
 
   doc.setTextColor(...PDF_COLORS.primaryOrange);
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(13);
-  doc.text(title, 191, 22, { align: "right" });
+  doc.setFontSize(10.5);
+  doc.text(title, 19, badgeY + 5.2);
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8);
-  doc.setTextColor(...PDF_COLORS.textMuted);
-  doc.text(subtitle, 191, 27, { align: "right" });
+  doc.setTextColor(...PDF_COLORS.textDark);
+  doc.text(subtitle, 191, badgeY + 5.2, { align: "right" });
 
-  // Divider line under header
-  currentY = Math.max(currentY, 36);
-  doc.setDrawColor(...PDF_COLORS.accentAmber);
-  doc.setLineWidth(0.5);
-  doc.line(15, currentY, 195, currentY);
+  // 5. Divider line under header
+  const dividerY = badgeY + 9.5;
+  doc.setDrawColor(...PDF_COLORS.primaryOrange);
+  doc.setLineWidth(0.6);
+  doc.line(15, dividerY, 195, dividerY);
 
-  return currentY;
+  return dividerY + 2.5;
 }
 
 /**
@@ -120,10 +130,10 @@ export function drawPdfHeader(
 export function drawPdfFooter(doc: jsPDF, company: CompanyInfo | null) {
   // Disclaimer text above footer bar
   doc.setFont("helvetica", "normal");
-  doc.setFontSize(7.5);
+  doc.setFontSize(7);
   doc.setTextColor(...PDF_COLORS.textMuted);
   doc.text(
-    `This is an authentic computer-generated document issued by ${company?.name || "Aarna Indian Food"}. Valid without physical seal unless requested.`,
+    `This is an authentic computer-generated document issued by ${company?.name || "Aarna Indian Food"}. Website: aarnaindianfood.com`,
     105,
     280,
     { align: "center" }
@@ -131,11 +141,11 @@ export function drawPdfFooter(doc: jsPDF, company: CompanyInfo | null) {
 
   // Amber accent line
   doc.setFillColor(...PDF_COLORS.accentAmber);
-  doc.rect(0, 284, 210, 1.2, "F");
+  doc.rect(0, 283.5, 210, 1.5, "F");
 
-  // Solid rich orange footer bar
+  // Solid rich orange footer bar (increased height: 12mm)
   doc.setFillColor(...PDF_COLORS.primaryOrange);
-  doc.rect(0, 285.2, 210, 11.8, "F");
+  doc.rect(0, 285, 210, 12, "F");
 
   // Footer text in white
   doc.setFont("helvetica", "bold");
@@ -145,5 +155,5 @@ export function drawPdfFooter(doc: jsPDF, company: CompanyInfo | null) {
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7);
-  doc.text(`${company?.name || "Aarna Indian Food"} Management System`, 195, 292, { align: "right" });
+  doc.text(`aarnaindianfood.com  •  ${company?.name || "Aarna Indian Food"} Management System`, 195, 292, { align: "right" });
 }
