@@ -1,5 +1,5 @@
 import qz from "qz-tray";
-import { connectPrinter, disconnectPrinter, isPrinterConnected, getAvailablePrinters } from "./qz";
+import { connectPrinter, disconnectPrinter, isPrinterConnected, getAvailablePrinters, getPrinterDetails } from "./qz";
 import { generateInvoice } from "./invoice";
 
 export interface PrintResult {
@@ -150,4 +150,4 @@ export async function printKOT(kot: any, Company: any): Promise<PrintResult> {
   return printInvoice(kotTicket, Company);
 }
 
-export { connectPrinter, disconnectPrinter, isPrinterConnected, getAvailablePrinters };
+export { connectPrinter, disconnectPrinter, isPrinterConnected, getAvailablePrinters, getPrinterDetails };

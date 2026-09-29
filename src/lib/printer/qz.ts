@@ -175,3 +175,27 @@ export async function getAvailablePrinters(): Promise<string[]> {
     return [];
   }
 }
+
+/**
+ * Fetches detailed metadata for all available printers from QZ Tray.
+ */
+export async function getPrinterDetails(): Promise<any[]> {
+  const connected = await connectPrinter();
+
+  if (!connected) {
+    console.error("QZ Tray is not connected.");
+    return [];
+  }
+
+  try {
+    if (!qz.websocket.isActive()) {
+      throw new Error("QZ Tray disconnected before printer discovery.");
+    }
+
+    const details = await qz.printers.details();
+    return Array.isArray(details) ? details : details ? [details] : [];
+  } catch (err) {
+    console.error("Failed to fetch printer details from QZ Tray:", err);
+    return [];
+  }
+}

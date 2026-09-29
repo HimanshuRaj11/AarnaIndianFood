@@ -16,10 +16,24 @@ declare module "qz-tray" {
     printers: {
       find: (query?: string) => Promise<string | string[]>;
       getDefault: () => Promise<string>;
+      details: () => Promise<any[]>;
+      startListening?: (printers?: string | string[] | null, options?: any) => Promise<void>;
+      stopListening?: () => Promise<void>;
+      getStatus?: () => Promise<any>;
+      clearQueue?: (options?: any) => Promise<void>;
     };
     print: (config: any, data: any[]) => Promise<void>;
     version: string;
   };
+  export interface QZPrinterDetail {
+    name: string;
+    driver?: string;
+    density?: number;
+    connection?: string;
+    trays?: string[];
+    isDefault?: boolean;
+    [key: string]: any;
+  }
   export default qz;
 }
 
