@@ -20,6 +20,9 @@ export async function connectPrinter(): Promise<boolean> {
   if (typeof window === "undefined") return false;
 
   try {
+    qz.printers.find()
+      .then(console.log)
+      .catch(console.error);
     if (qz.websocket.isActive()) {
       return true;
     }
